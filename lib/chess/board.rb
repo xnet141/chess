@@ -52,7 +52,7 @@ module Chess
       #raise            
       raw = get_raw_or_column(raws_and_columns, event_x) # [0]
       column = get_raw_or_column(raws_and_columns, event_y ) # [1]
-      return if raw.length && column.length == 0
+      return if (raw && column) == nil 
       [raw[0], column[1]]
     end # nil
 
@@ -61,7 +61,7 @@ module Chess
         range.include?(event)
       end
       p raw_or_column
-      return [] if raw_or_column.length == 0
+      return if raw_or_column.size == 0
       raw_or_column[0][1]
     end
   end
