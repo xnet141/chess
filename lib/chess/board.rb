@@ -44,16 +44,25 @@ module Chess
     end
 
     def axis event_x, event_y # попробовать улучшить
-      raw_x = Array.new(11) { |j| Array.new(2) { |i| i == 0 ? (j*100..(j+1)*100) : (j + 97).chr }}  # 0..100 => 0, 100..200 => 1, ...
-      column_y = Array.new(11) { |j| Array.new(2) { |i| i == 0 ? (j*100..(j+1)*100) : j }}  # 0..100 => 0, 100..200 => 1, ...
-
-      [get_raw_or_column(raw_x, event_x)[0][1], get_raw_or_column(column_y, event_y)[0][1]]
-    end
+      raws_and_columns = Array.new(8) { |j|
+                            Array.new(2) { |i|
+                              i == 0 ? (j+1)*100...((j+1)+1)*100 : [(j + 97).chr, 8 - j] 
+                            }
+                          }
+      #raise            
+      raw = get_raw_or_column(raws_and_columns, event_x) # [0]
+      column = get_raw_or_column(raws_and_columns, event_y ) # [1]
+      return if raw.length && column.length == 0
+      [raw[0], column[1]]
+    end # nil
 
     def get_raw_or_column arr, event
-      arr.select do |key, value| # зачем to_h , to_a
-        key.include?(event)
+      raw_or_column = arr.select do |range, raw_or_column| # зачем to_h , to_a
+        range.include?(event)
       end
+      p raw_or_column
+      return [] if raw_or_column.length == 0
+      raw_or_column[0][1]
     end
   end
 end
