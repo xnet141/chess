@@ -44,25 +44,28 @@ module Chess
     end
 
     def axis event_x, event_y # попробовать улучшить
-      raws_and_columns = Array.new(8) { |j|
+      ranks_files_raws_columns = Array.new(8) { |j|
                             Array.new(2) { |i|
-                              i == 0 ? (j+1)*100...((j+1)+1)*100 : [(j + 97).chr, 8 - j] 
+                              i == 0 ? (j+1)*100...((j+1)+1)*100 : [(j + 97).chr, 8 - j, j] 
                             }
                           }
       #raise            
-      raw = get_raw_or_column(raws_and_columns, event_x) # [0]
-      column = get_raw_or_column(raws_and_columns, event_y ) # [1]
-      return if (raw && column) == nil 
-      [raw[0], column[1]]
+      rank = get_rank_file_raw_column(ranks_files_raws_columns, event_x )
+      files = get_rank_file_raw_column(ranks_files_raws_columns, event_y )
+      raw = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
+      column = get_rank_file_raw_column(ranks_files_raws_columns, event_y )
+
+      return if [raw, column, rank, files].any?(&:nil?)
+      [rank[0], files[1], raw[2], column[2]]
     end # nil
 
-    def get_raw_or_column arr, event
-      raw_or_column = arr.select do |range, raw_or_column| # зачем to_h , to_a
+    def get_rank_file_raw_column arr, event
+      get_rank_file_raw_column = arr.select do |range, ranks_files_raws_columns| # зачем to_h , to_a
         range.include?(event)
       end
-      p raw_or_column
-      return if raw_or_column.size == 0
-      raw_or_column[0][1]
+      p get_rank_file_raw_column
+      return if get_rank_file_raw_column.size == 0
+      get_rank_file_raw_column[0][1]
     end
   end
 end
