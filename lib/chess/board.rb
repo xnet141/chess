@@ -53,13 +53,13 @@ module Chess
                             }
                           }
       #raise            
-      rank = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
-      file = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
-      raw = rank
+      file = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
+      rank = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
       column = file
+      raw = rank
       p "===============rank... #{rank.inspect}"
       return if [raw, column, rank, file].any?(&:nil?)
-      [rank[0], file[1], raw[2], column[2]]
+      [file[0], rank[1], column[2], raw[2]]
     end # nil
 
     def get_rank_file_raw_column arr, event
