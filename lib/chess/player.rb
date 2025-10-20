@@ -12,10 +12,14 @@ module Chess
     # end
     
     def logic event_x, event_y
-      x = axis(event_x, event_y)[2]
-      y = axis(event_x, event_y)[3]
+      axis = axis(event_x, event_y)
+      return if axis.nil?
+      x = axis[2]
+      y = axis[3]
       choose_square x, y
     end
+
+    private 
 
     def choose_square x, y
       @array[x][y] = ImageWithArray.new(

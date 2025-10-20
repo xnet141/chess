@@ -54,18 +54,18 @@ module Chess
       files = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
       raw = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
       column = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
-
+      p "===============rank... #{rank.inspect}"
       return if [raw, column, rank, files].any?(&:nil?)
       [rank[0], files[1], raw[2], column[2]]
     end # nil
 
     def get_rank_file_raw_column arr, event
-      get_rank_file_raw_column = arr.select do |range, ranks_files_raws_columns| # зачем to_h , to_a
+      rank_file_raw_column = arr.select do |range, rank_file_raw_column| # зачем to_h , to_a
         range.include?(event)
       end
-      p get_rank_file_raw_column
-      return if get_rank_file_raw_column.size == 0
-      get_rank_file_raw_column[0][1]
+      p "===rank_file... #{rank_file_raw_column}"
+      return if rank_file_raw_column.size == 0
+      rank_file_raw_column[0][1]
     end
   end
 end
