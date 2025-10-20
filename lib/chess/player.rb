@@ -13,6 +13,7 @@ module Chess
     
     def logic event_x, event_y
       axis = axis(event_x, event_y)
+      p axis
       return if axis.nil?
       x = axis[2]
       y = axis[3]
@@ -20,6 +21,10 @@ module Chess
     end
 
     private 
+
+    def initialize_board
+      
+    end
 
     def choose_square x, y
       @array[x][y] = ImageWithArray.new(

@@ -1,5 +1,8 @@
 module Chess  
   module Board
+
+    private
+
     class CircleWithArray < Circle
       def initialize(x: 25, y: 25, z: 0, radius: 50, sectors: 30,
                     color: nil, colour: nil, opacity: nil, data: nil)
@@ -51,12 +54,12 @@ module Chess
                           }
       #raise            
       rank = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
-      files = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
-      raw = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
-      column = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
+      file = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
+      raw = rank
+      column = file
       p "===============rank... #{rank.inspect}"
-      return if [raw, column, rank, files].any?(&:nil?)
-      [rank[0], files[1], raw[2], column[2]]
+      return if [raw, column, rank, file].any?(&:nil?)
+      [rank[0], file[1], raw[2], column[2]]
     end # nil
 
     def get_rank_file_raw_column arr, event
