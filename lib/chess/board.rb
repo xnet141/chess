@@ -50,10 +50,10 @@ module Chess
                             }
                           }
       #raise            
-      rank = get_rank_file_raw_column(ranks_files_raws_columns, event_x )
-      files = get_rank_file_raw_column(ranks_files_raws_columns, event_y )
+      rank = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
+      files = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
       raw = get_rank_file_raw_column(ranks_files_raws_columns, event_x)
-      column = get_rank_file_raw_column(ranks_files_raws_columns, event_y )
+      column = get_rank_file_raw_column(ranks_files_raws_columns, event_y)
 
       return if [raw, column, rank, files].any?(&:nil?)
       [rank[0], files[1], raw[2], column[2]]

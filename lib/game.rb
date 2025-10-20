@@ -22,7 +22,7 @@ set height: HEIGHT * GRID_SIZE
 # end
 
 Image.new(
-      'chess2.png',
+      'images/chess2.png',
       x: 0, y: 0,
       width: 1000, height: 1000,
       color: [1.0, 1.0, 1.0, 1.0],
@@ -36,7 +36,8 @@ on :mouse_down do |event|
   case event.button
   when :left
     # puts event.x, event.y
-    p player.axis event.x, event.y
+    # p player.axis event.x, event.y
+    player.logic event.x, event.y
   when :right
     close
   end
