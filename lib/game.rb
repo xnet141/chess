@@ -32,6 +32,8 @@ Image.new(
 
 player = Chess::Player.new
 
+
+
 on :mouse_down do |event| 
   case event.button
   when :left

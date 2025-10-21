@@ -20,8 +20,9 @@ module Chess
       return if axis.nil?
       x = axis[2]
       y = axis[3]
-      
-      choose_square x, y
+
+      mark_piece x, y
+      choose_square x, y 
     end
     
     private 
@@ -30,20 +31,34 @@ module Chess
       [1, 6].each.with_index do |raw_y|
         @array[raw_y].map!.with_index do |item, column_x| # map
           # p column_item
-          item = 43
-          # ImageWithArray.new(
-          #   'images/pawn.png',
-          #   x: column_x * GRID_SIZE + GRID_SIZE, y: raw_y * GRID_SIZE + GRID_SIZE,
-          #   width: 100, height: 100,
-          #   color: [1.0, 1.0, 0.2, 0.9],
-          #   rotate: 0,
-          #   z: 10,
-          #   data: [column_x, raw_y]
-          # )
+          item = ImageWithArray.new(
+            'images/pawn.png',
+            x: column_x * GRID_SIZE + GRID_SIZE, y: raw_y * GRID_SIZE + GRID_SIZE,
+            width: 100, height: 100,
+            color: [1.0, 1.0, 0.2, 0.9],
+            rotate: 0,
+            z: 0,
+            data: [column_x, raw_y]
+          )
         end
       end
   
       # p @array
+    end
+
+    def mark_piece x, y
+      if @array[y][x].class == ImageWithArray
+        @array[y][x].remove
+        @array[y][x] = ImageWithArray.new(
+        'images/pawn.png',
+        x: x * GRID_SIZE + GRID_SIZE, y: y * GRID_SIZE + GRID_SIZE,
+        width: 120, height: 120,
+        color: [1.0, 1.0, 0.2, 1.0],
+        rotate: 0,
+        z: 1,
+        data: [x, y]
+      )
+      end
     end
 
     def choose_square x, y # этот метод не подходит
