@@ -24,6 +24,8 @@ module Chess
     end
 
     class ImageWithArray < Image
+      attr_reader :color, :data 
+
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: 0, y: 0, z: 0,
                     rotate: 0, color: nil, colour: nil,
