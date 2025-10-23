@@ -24,17 +24,20 @@ module Chess
     end
 
     class ImageWithArray < Image
-      attr_reader :color, :data 
+      attr_reader :color 
+      attr_accessor :data 
 
       def initialize(path, atlas: nil,
-                    width: nil, height: nil, x: 0, y: 0, z: 0,
+                    width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
-                    opacity: nil, show: true, data: nil)
+                    opacity: nil, show: true, d: nil, data: nil)
         super(path, atlas: atlas,
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
         @data = data
+        @d = d
+        coordinates @data[0], @data[1], @d     
       end
       # def []=(index, value)
       #   @data[index] = value
@@ -45,6 +48,12 @@ module Chess
         else
           raise IndexError, "Неверный индекс"
         end
+      end
+
+      def coordinates x, y, d = 0
+        @x = x * GRID_SIZE + GRID_SIZE + d  
+        @y = y * GRID_SIZE + GRID_SIZE + d
+        @data = x, y    
       end
     end
 
