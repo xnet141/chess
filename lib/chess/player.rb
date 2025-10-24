@@ -2,6 +2,8 @@ require_relative 'board'
 
 module Chess
   class Player
+    attr_reader :array
+
     def initialize
       @array = Array.new(8) {Array.new(8)}
       @mark = true
@@ -60,11 +62,14 @@ module Chess
         # @array[y][x].remove
         @mark = !@mark
         @show_marked_piece = piece x, y, 0, 100, 100, 0.6
-        @mark_piece = @array[y][x]
+
+        @mark_piece = [y, x]
+        p "??? @mark_piece: #{@mark_piece}"
       end
     end
-
+    
     def choose_square x, y
+      p "&&&&& @mark_piece: #{@mark_piece}"
       p "begin @array[x][y]: #{@array[y][x].class}"
       if @array[y][x].nil?
         # @array[@mark_piece[1]][@mark_piece[0]].remove
@@ -72,17 +77,24 @@ module Chess
         # p "remove @mark_piece: #{@mark_piece.inspect}"
         # @mark_piece = nil
         # p "nil @mark_piece: #{@mark_piece}"
-        p "@mark_piece.data: #{@mark_piece.data}"
+        # p "@mark_piece.data: #{@mark_piece.data}"
         
-        @array[y][x] = @mark_piece
+        @array[y][x] = @array[@mark_piece[0]][@mark_piece[1]]
+        @array[@mark_piece[0]][@mark_piece[1]].remove
+        @array[@mark_piece[0]][@mark_piece[1]] = nil
+
         @array[y][x].coordinates x, y, 10
+
         # @mark_piece.remove
         # @array[y][x].add
         # p "@@@@@ @mark_piece: #{@mark_piece.inspect}"
         @show_marked_piece.remove
-        @show_marked_piece = @mark_piece = nil
+        @mark_piece = nil
+        @show_marked_piece = nil
+        
         # @mark_piece.add
         @mark = !@mark
+        @array[y][x].add
       end
       # p "end @array[x][y]: #{@array[x][y].inspect}"
     end 

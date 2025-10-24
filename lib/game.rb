@@ -32,14 +32,16 @@ Image.new(
 
 player = Chess::Player.new
 
-
-
 on :mouse_down do |event| 
   case event.button
   when :left
     # puts event.x, event.y
     # p player.axis event.x, event.y
     player.logic event.x, event.y
+    player.array.each do |raw|
+      puts raw.inspect
+      puts
+    end
   when :right
     close
   end
