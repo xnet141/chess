@@ -6,8 +6,8 @@ module Chess
 
     def initialize
       @array = Array.new(8) {Array.new(8)}
-      @mark = true
-      @mark_piece = nil
+      @mark_turn = true
+      @mark_cordinates = nil
       @show_marked_piece = nil
       initialize_board 
     end
@@ -23,14 +23,13 @@ module Chess
       return if axis.nil?
       x = axis[2]
       y = axis[3]
-      if @mark
-        p "!!!!!!!!!@mark_piece: #{@mark_piece.inspect}"
-        get_mark_piece x, y
-        p "!!!!!!!!!@mark_piece: #{@mark_piece.inspect}"
-      #end
-      else #if @mark
-        choose_square x, y
-        p "======@mark_piece: #{@mark_piece.inspect}"
+      if @mark_turn
+        p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
+        mark_piece x, y
+        p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
+      else
+        process_move x, y
+        p "======@mark_cordinates: #{@mark_cordinates.inspect}"
       end
     end
     
@@ -57,31 +56,38 @@ module Chess
       )
     end
 
-    def get_mark_piece x, y
+    def mark_piece x, y
       if @array[y][x].class == ImageWithArray
-        @mark = !@mark
         @show_marked_piece = piece x, y, 0, 100, 100, 0.6
+        @mark_turn = !@mark_turn
+        @mark_cordinates = [y, x]
+      end
+    end
 
-        @mark_piece = [y, x]
-        # p "??? @mark_piece: #{@mark_piece}"
+    def unmark_piece
+      @show_marked_piece.remove unless @show_marked_piece.nil?
+      @show_marked_piece = nil
+      @mark_cordinates = nil
+      @mark_turn = !@mark_turn
+    end
+
+    def do_move x, y
+      if @array[y][x].nil?
+        @array[y][x] = @array[@mark_cordinates[0]][@mark_cordinates[1]]
+        @array[@mark_cordinates[0]][@mark_cordinates[1]].remove
+        @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
+        @array[y][x].new_coordinates x, y, 10
+        @array[y][x].add
       end
     end
     
-    def choose_square x, y
-      # p "&&&&& @mark_piece: #{@mark_piece}"
+    def process_move x, y
+      # p "&&&&& @mark_cordinates: #{@mark_cordinates}"
       # p "begin @array[x][y]: #{@array[y][x].class}"
-      if @array[y][x].nil?
-        @array[y][x] = @array[@mark_piece[0]][@mark_piece[1]]
-        @array[@mark_piece[0]][@mark_piece[1]].remove
-        @array[@mark_piece[0]][@mark_piece[1]] = nil
-        @array[y][x].coordinates x, y, 10
-        @array[y][x].add
-
-        @show_marked_piece.remove
-        @mark_piece = nil
-        @show_marked_piece = nil
-        
-        @mark = !@mark
+      if do_move x, y
+        unmark_piece
+      else
+        unmark_piece
       end
       # p "end @array[x][y]: #{@array[x][y].inspect}"
     end 

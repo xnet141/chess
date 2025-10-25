@@ -37,7 +37,7 @@ module Chess
                     opacity: opacity, show: show)
         @data = data
         @d = d
-        coordinates @data[0], @data[1], @d     
+        new_coordinates @data[0], @data[1], @d     
       end
       # def []=(index, value)
       #   @data[index] = value
@@ -50,7 +50,7 @@ module Chess
         end
       end
 
-      def coordinates x, y, d = 0
+      def new_coordinates x, y, d = 0
         @x = x * GRID_SIZE + GRID_SIZE + d  
         @y = y * GRID_SIZE + GRID_SIZE + d
         @data = x, y    
