@@ -1,7 +1,7 @@
 require_relative 'board'
 
 module Chess
-  class Player
+  class Logic
     attr_reader :array
 
     def initialize
@@ -11,12 +11,9 @@ module Chess
       @show_marked_piece = nil
       initialize_board 
     end
-    include Chess::Board # ::
-    
-    # class << self
-    #   attr_accessor :array
-    # end
 
+    include Chess::Board 
+    
     def logic event_x, event_y
       axis = axis(event_x, event_y)
       p axis
@@ -37,8 +34,8 @@ module Chess
     
     def initialize_board 
       [1, 6].each.with_index do |raw_y|
-        @array[raw_y].map!.with_index do |item, column_x| # map
-          item = piece column_x, raw_y, 10, 80, 80
+        @array[raw_y].map!.with_index do |piece, column_x| # map
+          piece = piece column_x, raw_y, 10, 80, 80
         end
       end
     end
@@ -82,7 +79,6 @@ module Chess
     end
     
     def process_move x, y
-      # p "&&&&& @mark_cordinates: #{@mark_cordinates}"
       # p "begin @array[x][y]: #{@array[y][x].class}"
       if do_move x, y
         unmark_piece

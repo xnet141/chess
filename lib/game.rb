@@ -30,15 +30,15 @@ Image.new(
       z: 0,
     )
 
-player = Chess::Player.new
+logic = Chess::Logic.new
 
 on :mouse_down do |event| 
   case event.button
   when :left
     # puts event.x, event.y
     # p player.axis event.x, event.y
-    player.logic event.x, event.y
-    player.array.each do |raw|
+    logic.logic event.x, event.y
+    logic.array.each do |raw|
       puts raw.inspect
       puts
     end
