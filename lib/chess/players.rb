@@ -16,7 +16,7 @@ module Chess
 
     def initialize_board 
       @array[6].map!.with_index do |piece, column_x| # map
-        piece = piece column_x, 6, 10, 80, 80
+        piece = piece column_x, 6, 10, 50, 80
       end
     end
   end
@@ -30,7 +30,7 @@ module Chess
 
     def initialize_board 
       @array[1].map!.with_index do |piece, column_x| # map
-        piece = piece column_x, 1, 10, 80, 80
+        piece = piece column_x, 1, 10, 50, 80
       end
     end
   end

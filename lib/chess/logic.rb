@@ -48,10 +48,10 @@ module Chess
 
     def piece x, y, d, width, height, color = 1.0
       ImageWithArray.new(
-        'images/pawn.png',
+        'images/pawn_qq.png',
         # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
         width: width, height: height,
-        color: [1.0, 1.0, 1.0, color],
+        color: [9.0, 9.5, 2.2, color],
         rotate: 0,
         z: 0,
         d: d,
