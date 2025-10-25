@@ -59,42 +59,29 @@ module Chess
 
     def get_mark_piece x, y
       if @array[y][x].class == ImageWithArray
-        # @array[y][x].remove
         @mark = !@mark
         @show_marked_piece = piece x, y, 0, 100, 100, 0.6
 
         @mark_piece = [y, x]
-        p "??? @mark_piece: #{@mark_piece}"
+        # p "??? @mark_piece: #{@mark_piece}"
       end
     end
     
     def choose_square x, y
-      p "&&&&& @mark_piece: #{@mark_piece}"
-      p "begin @array[x][y]: #{@array[y][x].class}"
+      # p "&&&&& @mark_piece: #{@mark_piece}"
+      # p "begin @array[x][y]: #{@array[y][x].class}"
       if @array[y][x].nil?
-        # @array[@mark_piece[1]][@mark_piece[0]].remove
-        # @mark_piece.remove
-        # p "remove @mark_piece: #{@mark_piece.inspect}"
-        # @mark_piece = nil
-        # p "nil @mark_piece: #{@mark_piece}"
-        # p "@mark_piece.data: #{@mark_piece.data}"
-        
         @array[y][x] = @array[@mark_piece[0]][@mark_piece[1]]
         @array[@mark_piece[0]][@mark_piece[1]].remove
         @array[@mark_piece[0]][@mark_piece[1]] = nil
-
         @array[y][x].coordinates x, y, 10
+        @array[y][x].add
 
-        # @mark_piece.remove
-        # @array[y][x].add
-        # p "@@@@@ @mark_piece: #{@mark_piece.inspect}"
         @show_marked_piece.remove
         @mark_piece = nil
         @show_marked_piece = nil
         
-        # @mark_piece.add
         @mark = !@mark
-        @array[y][x].add
       end
       # p "end @array[x][y]: #{@array[x][y].inspect}"
     end 
