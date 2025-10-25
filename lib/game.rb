@@ -1,5 +1,5 @@
 require 'ruby2d'
-require_relative 'chess/player'
+require_relative 'chess/players'
 
 
 set title: "Hello!"
@@ -30,17 +30,23 @@ Image.new(
       z: 0,
     )
 
-logic = Chess::Logic.new
+player1 = Chess::Player1.new
+player2 = Chess::Player2.new
 
 on :mouse_down do |event| 
   case event.button
   when :left
     # puts event.x, event.y
-    # p player.axis event.x, event.y
-    logic.logic event.x, event.y
-    logic.array.each do |raw|
-      puts raw.inspect
-      puts
+    if Chess::Logic.player_turn
+      p "==========Player 1===="
+      player1.logic event.x, event.y
+      # player1.array.each do |raw|
+      #   puts raw.inspect
+      #   puts
+      # end
+    else
+      p "==========Player 2===="
+      player2.logic event.x, event.y
     end
   when :right
     close

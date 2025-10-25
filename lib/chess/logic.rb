@@ -2,18 +2,24 @@ require_relative 'board'
 
 module Chess
   class Logic
+    include Chess::Board
+
     attr_reader :array
 
     def initialize
-      @array = Array.new(8) {Array.new(8)}
       @mark_turn = true
       @mark_cordinates = nil
       @show_marked_piece = nil
-      initialize_board 
+      # initialize_board 
     end
 
-    include Chess::Board 
-    
+    @array = Array.new(8) {Array.new(8)}
+    @player_turn = true    
+
+    class << self
+      attr_accessor :array, :player_turn
+    end
+
     def logic event_x, event_y
       axis = axis(event_x, event_y)
       p axis
@@ -32,13 +38,13 @@ module Chess
     
     private 
     
-    def initialize_board 
-      [1, 6].each.with_index do |raw_y|
-        @array[raw_y].map!.with_index do |piece, column_x| # map
-          piece = piece column_x, raw_y, 10, 80, 80
-        end
-      end
-    end
+    # def initialize_board 
+    #   [1, 6].each.with_index do |raw_y|
+    #     @array[raw_y].map!.with_index do |piece, column_x| # map
+    #       piece = piece column_x, raw_y, 10, 80, 80
+    #     end
+    #   end
+    # end
 
     def piece x, y, d, width, height, color = 1.0
       ImageWithArray.new(
@@ -75,6 +81,7 @@ module Chess
         @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
         @array[y][x].new_coordinates x, y, 10
         @array[y][x].add
+        Chess::Logic.player_turn = !Chess::Logic.player_turn
       end
     end
     
@@ -86,6 +93,7 @@ module Chess
         unmark_piece
       end
       # p "end @array[x][y]: #{@array[x][y].inspect}"
+      
     end 
   end  
 end
