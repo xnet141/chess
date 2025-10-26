@@ -46,12 +46,12 @@ module Chess
     #   end
     # end
 
-    def piece x, y, d, width, height, color = 1.0
+    def piece path, x, y, width, height, color = 1.0, d
       ImageWithArray.new(
-        'images/pawn_qq.png',
+        path,
         # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
         width: width, height: height,
-        color: [9.0, 9.5, 2.2, color],
+        color: [1.0, 1.0, 1.0, color],
         rotate: 0,
         z: 0,
         d: d,
@@ -61,7 +61,9 @@ module Chess
 
     def mark_piece x, y
       if @array[y][x].class == ImageWithArray
-        @show_marked_piece = piece x, y, 0, 100, 100, 0.6
+        path_image = @array[y][x].path
+        p "path #{path_image}"
+        @show_marked_piece = piece path_image, x, y, 100, 100, 0.8, 0
         @mark_turn = !@mark_turn
         @mark_cordinates = [y, x]
       end
@@ -93,7 +95,6 @@ module Chess
         unmark_piece
       end
       # p "end @array[x][y]: #{@array[x][y].inspect}"
-      
     end 
   end  
 end

@@ -24,8 +24,9 @@ module Chess
     end
 
     class ImageWithArray < Image
-      attr_reader :color 
+      attr_reader :path 
       attr_accessor :data 
+      # attr_accessor :color
 
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
@@ -35,6 +36,7 @@ module Chess
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
+        @path = path
         @data = data
         @d = d
         new_coordinates @data[0], @data[1], @d     
