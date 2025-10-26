@@ -26,7 +26,6 @@ module Chess
     class ImageWithArray < Image
       attr_reader :path 
       attr_accessor :data 
-      # attr_accessor :color
 
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
@@ -41,6 +40,12 @@ module Chess
         @d = d
         new_coordinates @data[0], @data[1], @d     
       end
+
+      def new_coordinates x, y, d = 0
+        @x = x * GRID_SIZE + GRID_SIZE + 10 + d  
+        @y = y * GRID_SIZE + GRID_SIZE + 10 + d 
+        @data = x, y    
+      end
       # def []=(index, value)
       #   @data[index] = value
       # end
@@ -50,12 +55,6 @@ module Chess
         else
           raise IndexError, "Неверный индекс"
         end
-      end
-
-      def new_coordinates x, y, d = 0
-        @x = x * GRID_SIZE + GRID_SIZE + d  
-        @y = y * GRID_SIZE + GRID_SIZE + d
-        @data = x, y    
       end
     end
 

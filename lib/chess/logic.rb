@@ -63,7 +63,7 @@ module Chess
       if @array[y][x].class == ImageWithArray
         path_image = @array[y][x].path
         p "path #{path_image}"
-        @show_marked_piece = piece path_image, x, y, 100, 100, 0.8, 0
+        @show_marked_piece = piece path_image, x, y, 100, 100, 0.8, -10
         @mark_turn = !@mark_turn
         @mark_cordinates = [y, x]
       end
@@ -87,7 +87,7 @@ module Chess
       end
     end
     
-    def process_move x, y
+    def process_move x, y # лишний метод пока
       # p "begin @array[x][y]: #{@array[y][x].class}"
       if do_move x, y
         unmark_piece
