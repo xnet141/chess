@@ -81,7 +81,7 @@ module Chess
         @array[y][x] = @array[@mark_cordinates[0]][@mark_cordinates[1]]
         @array[@mark_cordinates[0]][@mark_cordinates[1]].remove
         @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
-        @array[y][x].new_coordinates x, y, 10
+        @array[y][x].new_coordinates x, y, 0
         @array[y][x].add
         Chess::Logic.player_turn = !Chess::Logic.player_turn
       end
