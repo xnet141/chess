@@ -7,17 +7,12 @@ module Chess
     def initialize
       @array = Chess::Logic.array
       super
-      initialize_board
+      initialize_pawns 6, 'images/pawn_white.png'
+      initialize_officers 7, 'images/rook_white.png', 'images/knight_white.png', 'images/bishop_white.png', 'images/queen_white.png', 'images/king_white.png', 'images/bishop_white.png', 'images/knight_white.png', 'images/rook_white.png'
     end
 
     def turn
       @turn = !@turn
-    end
-
-    def initialize_board 
-      @array[6].map!.with_index do |piece, column_x| # map
-        piece = piece 'images/bishop_white.png', column_x, 6, 80, 80, 0
-      end
     end
   end
 
@@ -25,13 +20,8 @@ module Chess
     def initialize
       @array = Chess::Logic.array
       super
-      initialize_board
-    end
-
-    def initialize_board 
-      @array[1].map!.with_index do |piece, column_x| # map
-        piece = piece 'images/knight_white.png', column_x, 1, 80, 80, 0
-      end
+      initialize_pawns 1, 'images/pawn_black.png'
+      initialize_officers 0, 'images/rook_black.png', 'images/knight_black.png', 'images/bishop_black.png', 'images/queen_black.png', 'images/king_black.png', 'images/bishop_black.png', 'images/knight_black.png', 'images/rook_black.png'
     end
   end
 end

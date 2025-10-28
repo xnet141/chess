@@ -12,3 +12,12 @@ else
 end
 
 p @a
+
+def test a, *mes
+p a
+p "===="
+p mes
+p mes.inspect
+end
+
+test 112, "test", 43, 54

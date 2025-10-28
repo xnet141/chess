@@ -27,42 +27,45 @@ module Chess
       x = axis[2]
       y = axis[3]
       if @mark_turn
-        p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
+        # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
         mark_piece x, y
-        p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
+        # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
       else
         process_move x, y
-        p "======@mark_cordinates: #{@mark_cordinates.inspect}"
+        # p "======@mark_cordinates: #{@mark_cordinates.inspect}"
       end
     end
     
     private 
     
-    # def initialize_board 
-    #   [1, 6].each.with_index do |raw_y|
-    #     @array[raw_y].map!.with_index do |piece, column_x| # map
-    #       piece = piece column_x, raw_y, 10, 80, 80
-    #     end
-    #   end
-    # end
+    def initialize_pawns row_pawns, path
+      @array[row_pawns].map!.with_index do |piece, column_pawn| # map
+        piece = piece path, column_pawn, row_pawns, 80, 80, 0
+      end
+    end
 
-    def piece path, x, y, width, height, color = 1.0, d
+    def initialize_officers row_officers, *paths
+      @array[row_officers] = paths.map.with_index do |path, column_officer|
+        piece path, column_officer, row_officers, 80, 80, 0
+      end 
+    end
+
+    def piece path, data_x, data_y, width, height, transparency = 1.0, d
       ImageWithArray.new(
         path,
         # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
         width: width, height: height,
-        color: [1.0, 1.0, 1.0, color],
+        color: [1.0, 1.0, 1.0, transparency],
         rotate: 0,
         z: 0,
         d: d,
-        data: [x, y]
+        data: [data_x, data_y]
       )
     end
 
     def mark_piece x, y
       if @array[y][x].class == ImageWithArray
         path_image = @array[y][x].path
-        p "path #{path_image}"
         @show_marked_piece = piece path_image, x, y, 100, 100, 0.8, -10
         @mark_turn = !@mark_turn
         @mark_cordinates = [y, x]
@@ -95,6 +98,6 @@ module Chess
         unmark_piece
       end
       # p "end @array[x][y]: #{@array[x][y].inspect}"
-    end 
-  end  
+    end
+  end
 end
