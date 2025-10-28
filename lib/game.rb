@@ -7,8 +7,8 @@ set title: "Hello!"
 GRID_SIZE = 100
 WIDTH = 10 
 HEIGHT = 10
-GRID_COLOR = Color.new('#222222')
-BLOCK_COLOR = Color.new(['orange', 'yellow', 'green'].sample)
+# GRID_COLOR = Color.new('#222222')
+# BLOCK_COLOR = Color.new(['orange', 'yellow', 'green'].sample)
 
 set width: WIDTH * GRID_SIZE
 set height: HEIGHT * GRID_SIZE
@@ -49,6 +49,8 @@ on :mouse_down do |event|
       player2.logic event.x, event.y
     end
   when :right
+    puts "player1.count: #{player1.count}"
+    puts "player2.count: #{player2.count}"
     close
   end
 end

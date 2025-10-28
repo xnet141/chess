@@ -26,18 +26,20 @@ module Chess
     class ImageWithArray < Image
       attr_reader :path 
       attr_accessor :data 
+      attr_reader :get_class 
 
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
-                    opacity: nil, show: true, d: nil, data: nil)
+                    opacity: nil, show: true, d: nil, data: nil, get_class: nil)
         super(path, atlas: atlas,
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
         @path = path
-        @data = data
         @d = d
+        @data = data
+        @get_class = get_class
         new_coordinates @data[0], @data[1], @d     
       end
 
