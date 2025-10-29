@@ -31,7 +31,7 @@ module Chess
         mark_piece x, y
         # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
       else
-        move x, y
+        process_move x, y
         # p "======@mark_cordinates: #{@mark_cordinates.inspect}"
       end
     end
@@ -80,12 +80,15 @@ module Chess
       @mark_turn = !@mark_turn
     end
     
-    def move x, y
+    def remove_piece x, y
       if !@array[y][x].nil? && @array[y][x].get_class != self.class
         @array[y][x].remove
         @array[y][x] = nil
         @count += 1
       end
+    end
+
+    def make_move x, y
       if @array[y][x].nil?
         @array[y][x] = @array[@mark_cordinates[0]][@mark_cordinates[1]]
         @array[@mark_cordinates[0]][@mark_cordinates[1]].remove
@@ -94,6 +97,13 @@ module Chess
         @array[y][x].add
         Chess::Logic.players_turn = !Chess::Logic.players_turn
       end
+    end
+
+    def process_move x, y
+      remove_piece x, y
+
+      make_move x, y
+
       unmark_piece
     end
 
