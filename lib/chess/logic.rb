@@ -106,24 +106,5 @@ module Chess
 
       unmark_piece
     end
-
-    # def do_move x, y
-    #   if @array[y][x].nil?
-    #     move x, y
-    #   else
-    #     move x, y
-    #     @count += 1
-    #   end
-    #   unmark_piece
-    # end
-    # def process_move x, y # лишний метод пока
-    #   # p "begin @array[x][y]: #{@array[y][x].class}"
-    #   if do_move x, y
-    #     unmark_piece
-    #   else take_piece x, y 
-    #     unmark_piece
-    #   end
-    #   # p "end @array[x][y]: #{@array[x][y].inspect}"
-    # end
   end
 end
