@@ -14,10 +14,10 @@ module Chess
     end
 
     @array = Array.new(8) {Array.new(8)}
-    @player_turn = true    
+    @players_turn = true    
 
     class << self
-      attr_accessor :array, :player_turn
+      attr_accessor :array, :players_turn
     end
 
     def logic event_x, event_y
@@ -74,7 +74,7 @@ module Chess
     end
     
     def unmark_piece
-      @show_marked_piece.remove unless @show_marked_piece.nil?
+      @show_marked_piece.remove unless @show_marked_piece.nil? # unless... не обязательно
       @show_marked_piece = nil
       @mark_cordinates = nil
       @mark_turn = !@mark_turn
@@ -92,7 +92,7 @@ module Chess
         @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
         @array[y][x].new_coordinates x, y, 0
         @array[y][x].add
-        Chess::Logic.player_turn = !Chess::Logic.player_turn
+        Chess::Logic.players_turn = !Chess::Logic.players_turn
       end
       unmark_piece
     end
