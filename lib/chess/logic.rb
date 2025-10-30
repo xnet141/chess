@@ -39,7 +39,7 @@ module Chess
     private 
 
     def piece path, data_x, data_y, width, height, transparency = 1.0, d
-      ImageWithArray.new(
+      PieceImage.new(
         path,
         # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
         width: width, height: height,
@@ -86,6 +86,22 @@ module Chess
         @array[y][x] = nil
         @count += 1
       end
+    end
+
+    def show_move_path
+      # нужно название фигуры - может класс?
+      # название фигуры считываем из названия файла, учесть что фигуры дублируются
+      # преобразуем это в методе piece
+      # описать ходы фигуры в PieceImage
+      # [y+3][x+1]
+      # [y+3][x-1]
+      # [y-3][x+1]
+      # [y-3][x-1]
+      # [y+1][x+3]
+      # [y+1][x-3]
+      # [y-1][x+3]
+      # [y-1][x-3]
+
     end
 
     def make_move x, y

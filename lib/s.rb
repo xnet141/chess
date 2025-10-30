@@ -22,7 +22,7 @@
 
 # test 112, "test", 43, 54
 
-def par a, b: nil
+def par a, b: nil, alex
   p a
   p b
 end

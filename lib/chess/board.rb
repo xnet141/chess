@@ -23,20 +23,20 @@ module Chess
       end
     end
 
-    class ImageWithArray < Image
-      attr_reader :path 
+    class PieceImage < Image
+      attr_reader :piece_name, :path, :get_class  
       attr_accessor :data 
-      attr_reader :get_class 
 
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
-                    opacity: nil, show: true, d: nil, data: nil, get_class: nil)
+                    opacity: nil, show: true, piece_name = nil, d: nil, data: nil, get_class: nil)
         super(path, atlas: atlas,
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
         @path = path
+        @piece_name = piece_name
         @d = d
         @data = data
         @get_class = get_class
