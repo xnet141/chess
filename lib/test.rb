@@ -36,3 +36,5 @@ end
 initialize_board array
 p array
 
+# test
+
