@@ -22,9 +22,11 @@
 
 # test 112, "test", 43, 54
 
-def par a, b: nil, alex
-  p a
-  p b
-end
+# def par a, b: nil, alex
+#   p a
+#   p b
+# end
 
-par 1
+# par 1
+
+(1..3).map {|item_x| p item_x}

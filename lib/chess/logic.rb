@@ -63,11 +63,29 @@ module Chess
         piece path, column_officer, row_officers, 80, 80, 0
       end 
     end
+
+    def is_my_piece? x, y
+      !@array[y][x].nil? && @array[y][x].get_class == self.class
+    end
+
+    def is_enemy_piece? x, y
+      !@array[y][x].nil? && @array[y][x].get_class != self.class
+    end
+
+    def square_nil? x, y 
+      @array[y][x].nil?
+    end
     
     def mark_piece x, y
-      if !@array[y][x].nil? && @array[y][x].get_class == self.class
-        path_image = @array[y][x].path
-        @show_marked_piece = piece path_image, x, y, 100, 100, 0.8, -10
+      if is_my_piece? x, y
+        path = (y-2..y-1).map do |item_y| 
+          p "item_y: #{item_y}"
+          piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 if square_nil? x ,item_y
+        end
+        p path.first.data[1]
+        piece @array[y][x].path ,x+1 ,path.first.data[1] , 100, 100, 0.8, -10
+        piece @array[y][x].path ,x-1 ,path.first.data[1] , 100, 100, 0.8, -10
+        @show_marked_piece = piece @array[y][x].path, x, y, 100, 100, 0.8, -10
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
@@ -81,18 +99,28 @@ module Chess
     end
     
     def remove_piece x, y
-      if !@array[y][x].nil? && @array[y][x].get_class != self.class
+      if is_enemy_piece? x, y
         @array[y][x].remove
         @array[y][x] = nil
         @count += 1
       end
     end
 
-    # def show_move_path
+    # def show_path x, y
     #   # нужно название фигуры - может класс?
     #   # название фигуры считываем из названия файла, учесть что фигуры дублируются
     #   # преобразуем это в методе piece
     #   # описать ходы фигуры в PieceImage
+      
+    #   if !@array[y][x].nil? && @array[y][x].get_class == self.class
+    #     return
+    #   else 
+    #     (x+1..3).map do |item_x| 
+    #       p item_x
+    #       piece @array[y][x].path, item_x, y, 100, 100, 0.8, -10
+    #     end
+    #   end
+
     #   # [y+3][x+1]
     #   # [y+3][x-1]
     #   # [y-3][x+1]
@@ -101,7 +129,6 @@ module Chess
     #   # [y+1][x-3]
     #   # [y-1][x+3]
     #   # [y-1][x-3]
-
     # end
 
     def make_move x, y
@@ -115,7 +142,13 @@ module Chess
       end
     end
 
+    # def process_mark x, y
+
+    # end
+
     def process_move x, y
+      # show_path x, y
+
       remove_piece x, y
 
       make_move x, y
