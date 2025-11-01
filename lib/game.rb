@@ -52,7 +52,7 @@ on :mouse_down do |event|
     t = Text.new(
       "player1.count: #{player1.count}, player2.count: #{player2.count}",
       x: 40, y: 936,
-      font: 'images/LiberationSerif-Regular.ttf',
+      font: 'fonts/LiberationSerif-Regular.ttf',
       style: 'bold',
       size: 35,
       color: 'blue',

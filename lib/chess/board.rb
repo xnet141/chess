@@ -30,7 +30,7 @@ module Chess
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
-                    opacity: nil, show: true, piece_name = nil, d: nil, data: nil, get_class: nil)
+                    opacity: nil, show: true, piece_name: nil, d: nil, data: nil, get_class: nil)
         super(path, atlas: atlas,
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
