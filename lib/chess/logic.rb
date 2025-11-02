@@ -40,7 +40,7 @@ module Chess
     private 
 
     def piece path, data_x, data_y, width, height, transparency = 1.0, d
-      if data_x >= 0 && data_x <= 7 && data_y >= 0 && data_y <= 7
+      if (0..7).cover?(data_x) && (0..7).cover?(data_y)
         PieceImage.new(
           path,
           # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,

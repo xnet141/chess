@@ -78,7 +78,7 @@ module Chess
 
     def get_rank_file_row_column arr, event
       rank_file_row_column = arr.select do |range, rank_file_row_column| # зачем to_h , to_a
-        range.include?(event)
+        range.cover?(event)
       end
       p "===rank_file... #{rank_file_row_column}"
       return if rank_file_row_column.size == 0
