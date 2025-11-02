@@ -28,12 +28,9 @@ module Chess
       x = axis[2]
       y = axis[3]
       if @mark_turn
-        # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
         process_mark x, y
-        # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
       else
         process_move x, y
-        # p "======@mark_cordinates: #{@mark_cordinates.inspect}"
       end
     end
     
@@ -56,15 +53,11 @@ module Chess
     end
     
     def initialize_pawns row_pawns, path
-      @array[row_pawns].map!.with_index do |item, column_pawn| # map
-        piece path, column_pawn, row_pawns, 80, 80, 0
-      end
+      @array[row_pawns].map!.with_index  {|item, column_pawn| piece path, column_pawn, row_pawns, 80, 80, 0}
     end
 
     def initialize_officers row_officers, *paths
-      @array[row_officers] = paths.map.with_index do |path, column_officer|
-        piece path, column_officer, row_officers, 80, 80, 0
-      end 
+      @array[row_officers] = paths.map.with_index {|path, column_officer| piece path, column_officer, row_officers, 80, 80, 0}
     end
 
     def is_my_piece? x, y
@@ -75,10 +68,6 @@ module Chess
       !@array[y][x].nil? && @array[y][x].get_class != self.class
     end
 
-    def is_square_nil? x, y 
-      @array[y][x].nil?
-    end
-    
     def mark_piece x, y
       if is_my_piece?(x, y)
         @show_marked_piece = piece @array[y][x].path, x, y, 100, 100, 0.8, -10
