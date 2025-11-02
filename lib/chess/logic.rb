@@ -39,17 +39,19 @@ module Chess
     private 
 
     def piece path, data_x, data_y, width, height, transparency = 1.0, d
-      PieceImage.new(
-        path,
-        # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
-        width: width, height: height,
-        color: [1.0, 1.0, 1.0, transparency],
-        rotate: 0,
-        z: 0,
-        d: d,
-        data: [data_x, data_y],
-        get_class: self.class
-      )
+      if data_x >= 0 && data_x <= 7 && data_y >= 0 && data_y <= 7
+        PieceImage.new(
+          path,
+          # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
+          width: width, height: height,
+          color: [1.0, 1.0, 1.0, transparency],
+          rotate: 0,
+          z: 0,
+          d: d,
+          data: [data_x, data_y],
+          get_class: self.class
+        )
+      end
     end
     
     def initialize_pawns row_pawns, path
@@ -72,19 +74,13 @@ module Chess
       !@array[y][x].nil? && @array[y][x].get_class != self.class
     end
 
-    def square_nil? x, y 
+    def is_square_nil? x, y 
       @array[y][x].nil?
     end
     
     def mark_piece x, y
       if is_my_piece? x, y
-        path = (y-2..y-1).map do |item_y| 
-          p "item_y: #{item_y}"
-          piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 if square_nil? x ,item_y
-        end
-        p path.first.data[1]
-        piece @array[y][x].path ,x+1 ,path.first.data[1] , 100, 100, 0.8, -10
-        piece @array[y][x].path ,x-1 ,path.first.data[1] , 100, 100, 0.8, -10
+        show_path x, y
         @show_marked_piece = piece @array[y][x].path, x, y, 100, 100, 0.8, -10
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
@@ -106,30 +102,18 @@ module Chess
       end
     end
 
-    # def show_path x, y
-    #   # нужно название фигуры - может класс?
-    #   # название фигуры считываем из названия файла, учесть что фигуры дублируются
-    #   # преобразуем это в методе piece
-    #   # описать ходы фигуры в PieceImage
-      
-    #   if !@array[y][x].nil? && @array[y][x].get_class == self.class
-    #     return
-    #   else 
-    #     (x+1..3).map do |item_x| 
-    #       p item_x
-    #       piece @array[y][x].path, item_x, y, 100, 100, 0.8, -10
-    #     end
-    #   end
-
-    #   # [y+3][x+1]
-    #   # [y+3][x-1]
-    #   # [y-3][x+1]
-    #   # [y-3][x-1]
-    #   # [y+1][x+3]
-    #   # [y+1][x-3]
-    #   # [y-1][x+3]
-    #   # [y-1][x-3]
-    # end
+    def show_path x, y
+      if @array[y][x].get_class == Player1
+        path = (y-2..y-1).map do |item_y| 
+          p "item_y: #{item_y}"
+          piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 #if is_square_nil? x ,item_y
+        end
+        if path.first#.data[1] if !path.first.nil?
+          piece @array[y][x].path ,x+1 ,path.first.data[1] , 100, 100, 0.8, -10
+          piece @array[y][x].path ,x-1 ,path.first.data[1] , 100, 100, 0.8, -10
+        end
+      end
+    end
 
     def make_move x, y
       if @array[y][x].nil?
