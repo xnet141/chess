@@ -10,6 +10,7 @@ module Chess
       @mark_turn = true
       @mark_cordinates = nil
       @show_marked_piece = nil
+      @path_squares = []
       # initialize_board 
     end
 
@@ -28,7 +29,7 @@ module Chess
       y = axis[3]
       if @mark_turn
         # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
-        mark_piece x, y
+        process_mark x, y
         # p "!!!!!!!!!@mark_cordinates: #{@mark_cordinates.inspect}"
       else
         process_move x, y
@@ -79,8 +80,7 @@ module Chess
     end
     
     def mark_piece x, y
-      if is_my_piece? x, y
-        show_path x, y
+      if !@array[y][x].nil? && is_my_piece?(x, y)
         @show_marked_piece = piece @array[y][x].path, x, y, 100, 100, 0.8, -10
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
@@ -103,16 +103,37 @@ module Chess
     end
 
     def show_path x, y
-      if @array[y][x].get_class == Player1
-        path = (y-2..y-1).map do |item_y| 
-          p "item_y: #{item_y}"
-          piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 #if is_square_nil? x ,item_y
-        end
-        if path.first#.data[1] if !path.first.nil?
-          piece @array[y][x].path ,x+1 ,path.first.data[1] , 100, 100, 0.8, -10
-          piece @array[y][x].path ,x-1 ,path.first.data[1] , 100, 100, 0.8, -10
+      if !@array[y][x].nil? && is_my_piece?(x, y)
+        if @array[y][x].get_class == Player1
+          @path_squares = (y-2..y-1).map do |item_y| 
+            p "item_y: #{item_y}"
+            piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 
+          end
+          path_first = @path_squares.first
+          if path_first
+            path_cell = piece(@array[y][x].path ,x+1 ,path_first.data[1] , 100, 100, 0.8, -10)
+            @path_squares << path_cell if !path_cell.nil?
+            path_cell = piece(@array[y][x].path ,x-1 ,path_first.data[1] , 100, 100, 0.8, -10)
+            @path_squares << path_cell if !path_cell.nil?
+          end
+        else 
+          @path_squares = (y+1..y+2).map do |item_y| 
+            p "item_y: #{item_y}"
+            piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 
+          end
+          path_last = @path_squares.last
+          if path_last
+            path_cell = piece(@array[y][x].path ,x+1 ,path_last.data[1] , 100, 100, 0.8, -10)
+            @path_squares << path_cell if !path_cell.nil?
+            path_cell = piece(@array[y][x].path ,x-1 ,path_last.data[1] , 100, 100, 0.8, -10)
+            @path_squares << path_cell if !path_cell.nil?
+          end        
         end
       end
+    end
+
+    def cancel_show_path
+      @path_squares.each(&:remove)
     end
 
     def make_move x, y
@@ -126,18 +147,24 @@ module Chess
       end
     end
 
-    # def process_mark x, y
+    def process_mark x, y
+      show_path x, y 
 
-    # end
+      mark_piece x, y
+    end
+
+    def undo_mark
+      cancel_show_path
+
+      unmark_piece
+    end
 
     def process_move x, y
-      # show_path x, y
-
       remove_piece x, y
 
       make_move x, y
 
-      unmark_piece
+      undo_mark
     end
   end
 end
