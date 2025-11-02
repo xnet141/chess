@@ -80,30 +80,15 @@ module Chess
     end
     
     def mark_piece x, y
-      if !@array[y][x].nil? && is_my_piece?(x, y)
+      if is_my_piece?(x, y)
         @show_marked_piece = piece @array[y][x].path, x, y, 100, 100, 0.8, -10
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
     end
     
-    def unmark_piece
-      @show_marked_piece.remove unless @show_marked_piece.nil? # unless... не обязательно
-      @show_marked_piece = nil
-      @mark_cordinates = nil
-      @mark_turn = !@mark_turn
-    end
-    
-    def remove_piece x, y
-      if is_enemy_piece? x, y
-        @array[y][x].remove
-        @array[y][x] = nil
-        @count += 1
-      end
-    end
-
     def show_path x, y
-      if !@array[y][x].nil? && is_my_piece?(x, y)
+      if is_my_piece?(x, y)
         if @array[y][x].get_class == Player1
           @path_squares = (y-2..y-1).map do |item_y| 
             p "item_y: #{item_y}"
@@ -130,6 +115,21 @@ module Chess
           end        
         end
       end
+    end
+    
+    def remove_piece x, y
+      if is_enemy_piece? x, y
+        @array[y][x].remove
+        @array[y][x] = nil
+        @count += 1
+      end
+    end
+    
+    def unmark_piece
+      @show_marked_piece.remove unless @show_marked_piece.nil? # unless... не обязательно
+      @show_marked_piece = nil
+      @mark_cordinates = nil
+      @mark_turn = !@mark_turn
     end
 
     def cancel_show_path
