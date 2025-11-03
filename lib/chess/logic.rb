@@ -36,16 +36,16 @@ module Chess
     
     private 
 
-    def piece path, data_x, data_y, width, height, transparency = 1.0, d
+    def piece path, data_x, data_y, width, height, transparency = 1.0, hash
       if (0..7).cover?(data_x) && (0..7).cover?(data_y)
         PieceImage.new(
           path,
-          # x: x * GRID_SIZE + GRID_SIZE + d, y: y * GRID_SIZE + GRID_SIZE + d,
+          # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
           width: width, height: height,
           color: [1.0, 1.0, 1.0, transparency],
           rotate: 0,
           z: 0,
-          d: d,
+          hash: hash,
           data: [data_x, data_y],
           get_class: self.class
         )
@@ -70,7 +70,7 @@ module Chess
 
     def mark_piece x, y
       if is_my_piece?(x, y)
-        @show_marked_piece = piece @array[y][x].path, x, y, 100, 100, 0.8, -10
+        @show_marked_piece = piece @array[y][x].path, x, y, 120, 120, 0.8, -20
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
@@ -79,31 +79,25 @@ module Chess
     def show_path x, y
       if is_my_piece?(x, y)
         if @array[y][x].get_class == Player1
-          @path_squares = (y-2..y-1).map do |item_y| 
-            p "item_y: #{item_y}"
-            piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 
-          end
-          path_first = @path_squares.first
-          if path_first
-            path_cell = piece(@array[y][x].path ,x+1 ,path_first.data[1] , 100, 100, 0.8, -10)
-            @path_squares << path_cell if !path_cell.nil?
-            path_cell = piece(@array[y][x].path ,x-1 ,path_first.data[1] , 100, 100, 0.8, -10)
-            @path_squares << path_cell if !path_cell.nil?
-          end
+          knight_path x, y, "Player1"
         else 
-          @path_squares = (y+1..y+2).map do |item_y| 
-            p "item_y: #{item_y}"
-            piece @array[y][x].path ,x ,item_y , 100, 100, 0.8, -10 
-          end
-          path_last = @path_squares.last
-          if path_last
-            path_cell = piece(@array[y][x].path ,x+1 ,path_last.data[1] , 100, 100, 0.8, -10)
-            @path_squares << path_cell if !path_cell.nil?
-            path_cell = piece(@array[y][x].path ,x-1 ,path_last.data[1] , 100, 100, 0.8, -10)
-            @path_squares << path_cell if !path_cell.nil?
-          end        
+          knight_path x, y, "Player2"
         end
       end
+    end
+
+    def knight_path x, y, player
+      # hash = {"Player1" => [5, 5], "Player2" => [5, 5]}
+      min = 2#hash[player][0] 
+      max = 4#hash[player][1]
+      @path_squares = (min..max).map do |item_y|
+        p "item_y: #{item_y}"
+        piece @array[y][x].path ,x ,item_y ,100,100, 0.6, -10
+      end
+      path_cell = piece(@array[y][x].path ,x+1 ,max ,100,100, 0.8, -10)
+      @path_squares << path_cell if !path_cell.nil?
+      path_cell = piece(@array[y][x].path ,x-1 ,max ,100,100, 0.8, -10)
+      @path_squares << path_cell if !path_cell.nil?
     end
     
     def remove_piece x, y
@@ -137,9 +131,9 @@ module Chess
     end
 
     def process_mark x, y
-      show_path x, y 
-
       mark_piece x, y
+      
+      show_path x, y 
     end
 
     def undo_mark
