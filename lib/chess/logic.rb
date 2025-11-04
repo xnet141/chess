@@ -10,7 +10,7 @@ module Chess
       @mark_turn = true
       @mark_cordinates = nil
       @show_marked_piece = nil
-      @path_squares = nil
+      @path_squares = []
       # initialize_board 
     end
 
@@ -81,21 +81,37 @@ module Chess
         if @array[y][x].get_class == Player1
           knight_path x, y, "Player1"
         else 
-          knight_path x, y, "Player2"
+          knight_path x, y, "Player1"#"Player2"
         end
       end
     end
 
+    # def knight_path x, y, player
+    #   hash = {"Player1" => [y-2,y-1,y-2], "Player2" => [y+1,y+2,y+2]}
+    #   @path_squares = (hash[player][0]..hash[player][1]).map do |item_y|
+    #     p "item_y: #{item_y}"
+    #     piece @array[y][x].path ,x ,item_y ,100,100, 0.6, -10
+    #   end
+    #   path_square = piece(@array[y][x].path ,x+1 ,hash[player][2] ,100,100, 0.8, -10)
+    #   @path_squares << path_square if !path_square.nil?
+    #   path_square = piece(@array[y][x].path ,x-1 ,hash[player][2] ,100,100, 0.8, -10)
+    #   @path_squares << path_square if !path_square.nil?
+    # end
+
+
+    
+    
     def knight_path x, y, player
-      hash = {"Player1" => [y-2,y-1,y-2], "Player2" => [y+1,y+2,y+2]}
-      @path_squares = (hash[player][0]..hash[player][1]).map do |item_y|
-        p "item_y: #{item_y}"
-        piece @array[y][x].path ,x ,item_y ,100,100, 0.6, -10
+      hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
+      [y-2,y-1,y+1,y+2].map.with_index do |item, index|
+        # p "item_y: #{item_y}"
+        @path_squares << piece(@array[y][x].path ,x-1 ,item ,100,100, 0.6, -10) if index == 0
+        @path_squares << piece(@array[y][x].path ,x+1 ,item ,100,100, 0.6, -10) if index == 0
+        @path_squares << piece(@array[y][x].path ,x ,item ,100,100, 0.6, -10) 
+        @path_squares << piece(@array[y][x].path ,x-1 ,item ,100,100, 0.6, -10) if index == 3
+        @path_squares << piece(@array[y][x].path ,x+1 ,item ,100,100, 0.6, -10) if index == 3
+        p "#{index} #{item}"
       end
-      path_square = piece(@array[y][x].path ,x+1 ,hash[player][2] ,100,100, 0.8, -10)
-      @path_squares << path_square if !path_square.nil?
-      path_square = piece(@array[y][x].path ,x-1 ,hash[player][2] ,100,100, 0.8, -10)
-      @path_squares << path_square if !path_square.nil?
     end
     
     def remove_piece x, y
@@ -114,7 +130,9 @@ module Chess
     end
 
     def cancel_show_path
-      @path_squares.each(&:remove)
+      @path_squares = @path_squares.reject(&:nil?).each(&:remove)
+      @path_squares = []
+      # @path_squares.compact.each(&:remove) # убрать все  nil
     end
 
     def make_move x, y
