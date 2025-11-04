@@ -92,10 +92,10 @@ module Chess
         p "item_y: #{item_y}"
         piece @array[y][x].path ,x ,item_y ,100,100, 0.6, -10
       end
-      path_cell = piece(@array[y][x].path ,x+1 ,hash[player][2] ,100,100, 0.8, -10)
-      @path_squares << path_cell if !path_cell.nil?
-      path_cell = piece(@array[y][x].path ,x-1 ,hash[player][2] ,100,100, 0.8, -10)
-      @path_squares << path_cell if !path_cell.nil?
+      path_square = piece(@array[y][x].path ,x+1 ,hash[player][2] ,100,100, 0.8, -10)
+      @path_squares << path_square if !path_cell.nil?
+      path_square = piece(@array[y][x].path ,x-1 ,hash[player][2] ,100,100, 0.8, -10)
+      @path_squares << path_square if !path_cell.nil?
     end
     
     def remove_piece x, y
