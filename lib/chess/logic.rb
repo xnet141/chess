@@ -36,7 +36,7 @@ module Chess
     
     private 
 
-    def piece path, data_x, data_y, width, height, transparency = 1.0, hash
+    def piece path, data_x, data_y, width, height, transparency = 1.0, d
       if (0..7).cover?(data_x) && (0..7).cover?(data_y)
         PieceImage.new(
           path,
@@ -45,7 +45,7 @@ module Chess
           color: [1.0, 1.0, 1.0, transparency],
           rotate: 0,
           z: 0,
-          hash: hash,
+          d: d,
           data: [data_x, data_y],
           get_class: self.class
         )
@@ -87,16 +87,14 @@ module Chess
     end
 
     def knight_path x, y, player
-      # hash = {"Player1" => [5, 5], "Player2" => [5, 5]}
-      min = 2#hash[player][0] 
-      max = 4#hash[player][1]
-      @path_squares = (min..max).map do |item_y|
+      hash = {"Player1" => [y-2,y-1,y-2], "Player2" => [y+1,y+2,y+2]}
+      @path_squares = (hash[player][0]..hash[player][1]).map do |item_y|
         p "item_y: #{item_y}"
         piece @array[y][x].path ,x ,item_y ,100,100, 0.6, -10
       end
-      path_cell = piece(@array[y][x].path ,x+1 ,max ,100,100, 0.8, -10)
+      path_cell = piece(@array[y][x].path ,x+1 ,hash[player][2] ,100,100, 0.8, -10)
       @path_squares << path_cell if !path_cell.nil?
-      path_cell = piece(@array[y][x].path ,x-1 ,max ,100,100, 0.8, -10)
+      path_cell = piece(@array[y][x].path ,x-1 ,hash[player][2] ,100,100, 0.8, -10)
       @path_squares << path_cell if !path_cell.nil?
     end
     
