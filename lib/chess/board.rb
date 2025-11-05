@@ -24,7 +24,7 @@ module Chess
     end
 
     class PieceImage < Image
-      attr_reader :piece_name, :path, :get_class  
+      attr_reader :piece_name, :img, :get_class  
       attr_accessor :data 
 
       def initialize(path, atlas: nil,
@@ -35,7 +35,7 @@ module Chess
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
-        @path = path
+        @img = path
         @piece_name = piece_name
         @d = d
         @data = data

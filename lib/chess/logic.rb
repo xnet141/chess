@@ -52,12 +52,12 @@ module Chess
       end
     end
 
-    def piece_for_mark path, x, y
-      piece(path, x, y, 120, 120, 0.9, -20)
+    def piece_for_mark img, x, y
+      piece(img, x, y, 120, 120, 0.9, -20)
     end
 
-    def piece_for_path path, x, y
-      piece(path, x, y, 100, 100, 0.6, -10)
+    def piece_for_path img, x, y
+      piece(img, x, y, 100, 100, 0.6, -10)
     end
     
     def initialize_pawns row_pawns, path
@@ -78,7 +78,7 @@ module Chess
 
     def mark_piece x, y
       if is_my_piece?(x, y)
-        @show_marked_piece = piece_for_mark @array[y][x].path, x, y
+        @show_marked_piece = piece_for_mark @array[y][x].img, x, y
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
@@ -111,16 +111,19 @@ module Chess
     
     def knight_path x, y, player
       hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
-      [y-2,y-1,y+1,y+2].map.with_index do |item, index|
-        # p "item_y: #{item_y}"
-        p "x_y: #{x} #{y}"
-
-        @path_squares << piece_for_path(@array[y][x].path, x+1, item) if index == 0
-        @path_squares << piece_for_path(@array[y][x].path, x-1, item) if index == 0
-        @path_squares << piece_for_path(@array[y][x].path, x, item)
-        @path_squares << piece_for_path(@array[y][x].path, x+1, item) if index == 3
-        @path_squares << piece_for_path(@array[y][x].path, x-1, item) if index == 3
-        p "#{index} #{item}"
+      [y-2,y-1,y+1,y+2].map.with_index do |dy, index|
+        @path_squares << piece_for_path(@array[y][x].img, x+1, dy) if index == 0
+        @path_squares << piece_for_path(@array[y][x].img, x-1, dy) if index == 0
+        @path_squares << piece_for_path(@array[y][x].img, x, dy)
+        @path_squares << piece_for_path(@array[y][x].img, x+1, dy) if index == 3
+        @path_squares << piece_for_path(@array[y][x].img, x-1, dy) if index == 3
+      end
+      [x-2,x-1,x+1,x+2].map.with_index do |dx, index|
+        @path_squares << piece_for_path(@array[y][x].img, dx, y+1) if index == 0
+        @path_squares << piece_for_path(@array[y][x].img, dx, y-1) if index == 0
+        @path_squares << piece_for_path(@array[y][x].img, dx, y)
+        @path_squares << piece_for_path(@array[y][x].img, dx, y+1) if index == 3
+        @path_squares << piece_for_path(@array[y][x].img, dx, y-1) if index == 3
       end
     end
     
