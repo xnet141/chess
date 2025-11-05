@@ -86,39 +86,31 @@ module Chess
     
     def show_path x, y
       if is_my_piece?(x, y)
-        if @array[y][x].get_class == Player1
-          knight_path x, y, "Player1"
-        else 
-          knight_path x, y, "Player1"#"Player2"
-        end
+        # if @array[y][x].get_class == Player1
+        #   knight_path x, y, "Player1"
+        # else 
+          knight_path x, y#, "Player1"#"Player2"
+        # end
       end
     end
-
-    # def knight_path x, y, player
-    #   hash = {"Player1" => [y-2,y-1,y-2], "Player2" => [y+1,y+2,y+2]}
-    #   @path_squares = (hash[player][0]..hash[player][1]).map do |item_y|
-    #     p "item_y: #{item_y}"
-    #     piece @array[y][x].path ,x ,item_y ,100,100, 0.6, -10
-    #   end
-    #   path_square = piece(@array[y][x].path ,x+1 ,hash[player][2] ,100,100, 0.8, -10)
-    #   @path_squares << path_square if !path_square.nil?
-    #   path_square = piece(@array[y][x].path ,x-1 ,hash[player][2] ,100,100, 0.8, -10)
-    #   @path_squares << path_square if !path_square.nil?
-    # end
-
-
     
-    
-    def knight_path x, y, player
-      hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
-      [y-2,y-1,y+1,y+2].map.with_index do |dy, index|
+    def knight_path x, y#, player
+      arr1 = []; arr2 = []
+      (0..7).cover?(y-2) ? arr1.push(y-2,y-1) : arr1.push(nil,nil)
+      (0..7).cover?(y+2) ? arr1.push(y+1,y+2) : arr1.push(nil,nil)
+      (0..7).cover?(x-2) ? arr2.push(x-2,x-1) : arr2.push(nil,nil)
+      (0..7).cover?(x+2) ? arr2.push(x+1,x+2) : arr2.push(nil,nil)
+      p "arr1 : #{arr1}"
+      p "arr2 : #{arr2}"
+      # hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
+      arr1.map.with_index do |dy, index|
         @path_squares << piece_for_path(@array[y][x].img, x+1, dy) if index == 0
         @path_squares << piece_for_path(@array[y][x].img, x-1, dy) if index == 0
         @path_squares << piece_for_path(@array[y][x].img, x, dy)
         @path_squares << piece_for_path(@array[y][x].img, x+1, dy) if index == 3
         @path_squares << piece_for_path(@array[y][x].img, x-1, dy) if index == 3
       end
-      [x-2,x-1,x+1,x+2].map.with_index do |dx, index|
+      arr2.map.with_index do |dx, index|
         @path_squares << piece_for_path(@array[y][x].img, dx, y+1) if index == 0
         @path_squares << piece_for_path(@array[y][x].img, dx, y-1) if index == 0
         @path_squares << piece_for_path(@array[y][x].img, dx, y)
@@ -143,6 +135,7 @@ module Chess
     end
 
     def cancel_show_path
+      p "@path_squares: #{@path_squares}"
       @path_squares = @path_squares.reject(&:nil?).each(&:remove)
       @path_squares = []
       # @path_squares.compact.each(&:remove) # убрать все  nil
