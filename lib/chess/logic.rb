@@ -51,6 +51,14 @@ module Chess
         )
       end
     end
+
+    def piece_for_mark path, x, y
+      piece(path, x, y, 120, 120, 0.9, -20)
+    end
+
+    def piece_for_path path, x, y
+      piece(path, x, y, 100, 100, 0.6, -10)
+    end
     
     def initialize_pawns row_pawns, path
       @array[row_pawns].map!.with_index  {|item, column_pawn| piece path, column_pawn, row_pawns, 80, 80, 0}
@@ -70,7 +78,7 @@ module Chess
 
     def mark_piece x, y
       if is_my_piece?(x, y)
-        @show_marked_piece = piece @array[y][x].path, x, y, 120, 120, 0.8, -20
+        @show_marked_piece = piece_for_mark @array[y][x].path, x, y
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
@@ -105,11 +113,13 @@ module Chess
       hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
       [y-2,y-1,y+1,y+2].map.with_index do |item, index|
         # p "item_y: #{item_y}"
-        @path_squares << piece(@array[y][x].path ,x-1 ,item ,100,100, 0.6, -10) if index == 0
-        @path_squares << piece(@array[y][x].path ,x+1 ,item ,100,100, 0.6, -10) if index == 0
-        @path_squares << piece(@array[y][x].path ,x ,item ,100,100, 0.6, -10) 
-        @path_squares << piece(@array[y][x].path ,x-1 ,item ,100,100, 0.6, -10) if index == 3
-        @path_squares << piece(@array[y][x].path ,x+1 ,item ,100,100, 0.6, -10) if index == 3
+        p "x_y: #{x} #{y}"
+
+        @path_squares << piece_for_path(@array[y][x].path, x+1, item) if index == 0
+        @path_squares << piece_for_path(@array[y][x].path, x-1, item) if index == 0
+        @path_squares << piece_for_path(@array[y][x].path, x, item)
+        @path_squares << piece_for_path(@array[y][x].path, x+1, item) if index == 3
+        @path_squares << piece_for_path(@array[y][x].path, x-1, item) if index == 3
         p "#{index} #{item}"
       end
     end
