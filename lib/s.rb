@@ -49,7 +49,11 @@
 # p @qwqw
 
 class Player1
-
+  def initialize var = nil , a: nil, b: nil
+    @a = a
+    @b = b
+    @c = var
+  end
 end
 
 def knight_path player
@@ -68,3 +72,6 @@ puts test_puts.inspect
 
 
 p Player1.to_s
+
+test = Player1.new b: 42
+p test
