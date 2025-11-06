@@ -53,11 +53,11 @@ module Chess
     end
 
     def piece_for_mark img, x, y
-      piece(img, x, y, 120, 120, 0.9, -20)
+      piece img, x, y, 120, 120, 0.9, -20
     end
 
     def piece_for_path img, x, y
-      piece(img, x, y, 100, 100, 0.6, -10)
+      piece img, x, y, 100, 100, 0.6, -10
     end
     
     def initialize_pawns row_pawns, path
