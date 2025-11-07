@@ -13,6 +13,7 @@ module Chess
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
         @img = path
+        @path = []
         @piece_name = piece_name
         @d = d
         @data = data
@@ -38,11 +39,36 @@ module Chess
     end
 
     class Pawn < PieceImage
-      
+      def path
+        
+      end
     end
 
     class Knight < PieceImage
-      
+      def path array, x, y
+        arr1 = []; arr2 = []
+        (0..7).cover?(y-2) ? arr1.push(y-2,y-1) : arr1.push(nil,nil)
+        (0..7).cover?(y+2) ? arr1.push(y+1,y+2) : arr1.push(nil,nil)
+        (0..7).cover?(x-2) ? arr2.push(x-2,x-1) : arr2.push(nil,nil)
+        (0..7).cover?(x+2) ? arr2.push(x+1,x+2) : arr2.push(nil,nil)
+        p "arr1 : #{arr1}"
+        p "arr2 : #{arr2}"
+        # hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
+        arr1.map.with_index do |dy, index|
+          @path_squares << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 0
+          @path_squares << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 0
+          @path_squares << piece_for_path(self.class, array[y][x].img, x, dy)
+          @path_squares << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 3
+          @path_squares << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 3
+        end
+        arr2.map.with_index do |dx, index|
+          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 0
+          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 0
+          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y)
+          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 3
+          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 3
+        end
+      end
     end
   end
 end

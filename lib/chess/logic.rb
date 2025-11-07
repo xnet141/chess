@@ -1,8 +1,10 @@
 require_relative 'board'
+require_relative 'pieces'
 
 module Chess
   class Logic
     include Chess::Board
+    include Chess::Pieces
 
     attr_reader :array
 
@@ -36,9 +38,9 @@ module Chess
     
     private 
 
-    def piece path, data_x, data_y, width, height, transparency = 1.0, d
+    def piece chessman, path, data_x, data_y, width, height, transparency = 1.0, d
       if (0..7).cover?(data_x) && (0..7).cover?(data_y)
-        PieceImage.new(
+        chessman.new(
           path,
           # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
           width: width, height: height,
@@ -52,16 +54,16 @@ module Chess
       end
     end
 
-    def piece_for_mark img, x, y
-      piece img, x, y, 120, 120, 0.9, -20
+    def piece_for_mark chessman, img, x, y
+      piece chessman, img, x, y, 120, 120, 0.9, -20
     end
 
-    def piece_for_path img, x, y
-      piece img, x, y, 100, 100, 0.6, -10
+    def piece_for_path chessman, img, x, y
+      piece chessman, img, x, y, 100, 100, 0.6, -10
     end
     
-    def initialize_pawns row_pawns, path
-      @array[row_pawns].map!.with_index  {|item, column_pawn| piece path, column_pawn, row_pawns, 80, 80, 0}
+    def initialize_pawns row_pawns, chessman, path
+      @array[row_pawns].map!.with_index  {|item, column_pawn| piece chessman, path, column_pawn, row_pawns, 80, 80, 0}
     end
 
     def initialize_officers row_officers, *paths
@@ -78,7 +80,7 @@ module Chess
 
     def mark_piece x, y
       if is_my_piece?(x, y)
-        @show_marked_piece = piece_for_mark @array[y][x].img, x, y
+        @show_marked_piece = piece_for_mark Knight, @array[y][x].img, x, y
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
@@ -86,39 +88,10 @@ module Chess
     
     def show_path x, y
       if is_my_piece?(x, y)
-        # if @array[y][x].get_class == Player1
-        #   knight_path x, y, "Player1"
-        # else 
-          knight_path x, y#, "Player1"#"Player2"
-        # end
+        @array[y][x].path @array, x, y
       end
     end
-    
-    def knight_path x, y#, player
-      arr1 = []; arr2 = []
-      (0..7).cover?(y-2) ? arr1.push(y-2,y-1) : arr1.push(nil,nil)
-      (0..7).cover?(y+2) ? arr1.push(y+1,y+2) : arr1.push(nil,nil)
-      (0..7).cover?(x-2) ? arr2.push(x-2,x-1) : arr2.push(nil,nil)
-      (0..7).cover?(x+2) ? arr2.push(x+1,x+2) : arr2.push(nil,nil)
-      p "arr1 : #{arr1}"
-      p "arr2 : #{arr2}"
-      # hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
-      arr1.map.with_index do |dy, index|
-        @path_squares << piece_for_path(@array[y][x].img, x+1, dy) if index == 0
-        @path_squares << piece_for_path(@array[y][x].img, x-1, dy) if index == 0
-        @path_squares << piece_for_path(@array[y][x].img, x, dy)
-        @path_squares << piece_for_path(@array[y][x].img, x+1, dy) if index == 3
-        @path_squares << piece_for_path(@array[y][x].img, x-1, dy) if index == 3
-      end
-      arr2.map.with_index do |dx, index|
-        @path_squares << piece_for_path(@array[y][x].img, dx, y+1) if index == 0
-        @path_squares << piece_for_path(@array[y][x].img, dx, y-1) if index == 0
-        @path_squares << piece_for_path(@array[y][x].img, dx, y)
-        @path_squares << piece_for_path(@array[y][x].img, dx, y+1) if index == 3
-        @path_squares << piece_for_path(@array[y][x].img, dx, y-1) if index == 3
-      end
-    end
-    
+     
     def remove_piece x, y
       if is_enemy_piece? x, y
         @array[y][x].remove
