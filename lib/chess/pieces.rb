@@ -1,7 +1,7 @@
 module Chess
   module Pieces
     class PieceImage < Image
-      attr_reader :piece_name, :img, :get_class  
+      attr_reader :piece_name, :img, :get_class, :pieces_path  
       attr_accessor :data 
 
       def initialize(path, atlas: nil,
@@ -13,7 +13,7 @@ module Chess
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
         @img = path
-        @path = []
+        @pieces_path = []
         @piece_name = piece_name
         @d = d
         @data = data
@@ -55,24 +55,43 @@ module Chess
         p "arr2 : #{arr2}"
         # hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
         arr1.map.with_index do |dy, index|
-          @path_squares << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 0
-          @path_squares << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 0
-          @path_squares << piece_for_path(self.class, array[y][x].img, x, dy)
-          @path_squares << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 3
-          @path_squares << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 3
+          @pieces_path << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 0
+          @pieces_path << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 0
+          @pieces_path << piece_for_path(self.class, array[y][x].img, x, dy)
+          @pieces_path << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 3
+          @pieces_path << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 3
         end
         arr2.map.with_index do |dx, index|
-          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 0
-          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 0
-          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y)
-          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 3
-          @path_squares << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 3
+          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 0
+          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 0
+          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y)
+          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 3
+          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 3
         end
+        @pieces_path
       end
-      
+
+      private
+
       def piece_for_path chessman, img, x, y
         piece chessman, img, x, y, 100, 100, 0.6, -10
       end
+
+      def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
+        if (0..7).cover?(data_x) && (0..7).cover?(data_y)
+          chessman.new(
+            img,
+            # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
+            width: width, height: height,
+            color: [1.0, 1.0, 1.0, transparency],
+            rotate: 0,
+            z: 0,
+            d: d,
+            data: [data_x, data_y],
+            get_class: self.class
+          )
+      end
+    end
     end
   end
 end
