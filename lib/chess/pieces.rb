@@ -69,6 +69,10 @@ module Chess
           @path_squares << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 3
         end
       end
+      
+      def piece_for_path chessman, img, x, y
+        piece chessman, img, x, y, 100, 100, 0.6, -10
+      end
     end
   end
 end

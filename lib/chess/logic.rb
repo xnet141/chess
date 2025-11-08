@@ -38,10 +38,10 @@ module Chess
     
     private 
 
-    def piece chessman, path, data_x, data_y, width, height, transparency = 1.0, d
+    def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
       if (0..7).cover?(data_x) && (0..7).cover?(data_y)
         chessman.new(
-          path,
+          img,
           # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
           width: width, height: height,
           color: [1.0, 1.0, 1.0, transparency],
