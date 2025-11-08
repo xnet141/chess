@@ -38,32 +38,32 @@ module Chess
     
     private 
 
-    def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
-      if (0..7).cover?(data_x) && (0..7).cover?(data_y)
-        chessman.new(
-          img,
-          # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
-          width: width, height: height,
-          color: [1.0, 1.0, 1.0, transparency],
-          rotate: 0,
-          z: 0,
-          d: d,
-          data: [data_x, data_y],
-          get_class: self.class
-        )
-      end
-    end
+    # def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
+    #   if (0..7).cover?(data_x) && (0..7).cover?(data_y)
+    #     chessman.new(
+    #       img,
+    #       # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
+    #       width: width, height: height,
+    #       color: [1.0, 1.0, 1.0, transparency],
+    #       rotate: 0,
+    #       z: 0,
+    #       d: d,
+    #       data: [data_x, data_y],
+    #       get_class: self.class
+    #     )
+    #   end
+    # end
 
-    def piece_for_mark chessman, img, x, y
-      piece chessman, img, x, y, 120, 120, 0.9, -20
-    end
+    # def piece_for_mark chessman, img, x, y
+    #   piece chessman, img, x, y, 120, 120, 0.9, -20
+    # end
 
-    def piece_for_path chessman, img, x, y
-      piece chessman, img, x, y, 100, 100, 0.6, -10
-    end
+    # def piece_for_path chessman, img, x, y
+    #   piece chessman, img, x, y, 100, 100, 0.6, -10
+    # end
     
-    def initialize_pawns row_pawns, chessman, path
-      @array[row_pawns].map!.with_index  {|item, column_pawn| piece chessman, path, column_pawn, row_pawns, 80, 80, 0}
+    def initialize_pawns row_pawns
+      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.piece column_pawn, row_pawns, 80, 80, 0}
     end
 
     def initialize_officers row_officers, *paths
@@ -71,7 +71,7 @@ module Chess
     end
 
     def is_my_piece? x, y
-      !@array[y][x].nil? && @array[y][x].get_class == self.class
+      true #!@array[y][x].nil? && @array[y][x].get_class == self.class
     end
 
     def is_enemy_piece? x, y
@@ -80,7 +80,7 @@ module Chess
 
     def mark_piece x, y
       if is_my_piece?(x, y)
-        @show_marked_piece = @array[y][x].mark array, x, y
+        @show_marked_piece = @array[y][x].mark x, y
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end

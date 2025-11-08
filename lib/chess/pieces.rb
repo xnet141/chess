@@ -1,7 +1,7 @@
 module Chess
   module Pieces
     class PieceImage < Image
-      attr_reader :piece_name, :img, :get_class, :pieces_path  
+      attr_accessor :get_class, :pieces_path  
       attr_accessor :data 
 
       def initialize(path, atlas: nil,
@@ -12,7 +12,6 @@ module Chess
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
-        @img = path
         @pieces_path = []
         @piece_name = piece_name
         @d = d
@@ -45,6 +44,8 @@ module Chess
     end
 
     class Knight < PieceImage
+      IMG = 'images/knight_black.png'
+
       def path array, x, y
         arr1 = []; arr2 = []
         (0..7).cover?(y-2) ? arr1.push(y-2,y-1) : arr1.push(nil,nil)
@@ -55,37 +56,31 @@ module Chess
         p "arr2 : #{arr2}"
         # hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
         arr1.map.with_index do |dy, index|
-          @pieces_path << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 0
-          @pieces_path << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 0
-          @pieces_path << piece_for_path(self.class, array[y][x].img, x, dy)
-          @pieces_path << piece_for_path(self.class, array[y][x].img, x+1, dy) if index == 3
-          @pieces_path << piece_for_path(self.class, array[y][x].img, x-1, dy) if index == 3
+          @pieces_path << piece_for_path(x+1, dy) if index == 0
+          @pieces_path << piece_for_path(x-1, dy) if index == 0
+          @pieces_path << piece_for_path(x, dy)
+          @pieces_path << piece_for_path(x+1, dy) if index == 3
+          @pieces_path << piece_for_path(x-1, dy) if index == 3
         end
         arr2.map.with_index do |dx, index|
-          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 0
-          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 0
-          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y)
-          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y+1) if index == 3
-          @pieces_path << piece_for_path(self.class, array[y][x].img, dx, y-1) if index == 3
+          @pieces_path << piece_for_path(dx, y+1) if index == 0
+          @pieces_path << piece_for_path(dx, y-1) if index == 0
+          @pieces_path << piece_for_path(dx, y)
+          @pieces_path << piece_for_path(dx, y+1) if index == 3
+          @pieces_path << piece_for_path(dx, y-1) if index == 3
         end
         @pieces_path
       end
 
-      def mark array, x, y
-        piece self.class, array[y][x].img, x, y, 120, 120, 0.9, -20
+      def mark x, y
+        piece x, y, 120, 120, 0.9, -20
       end
 
-      private
-
-      def piece_for_path chessman, img, x, y
-        piece chessman, img, x, y, 100, 100, 0.6, -10
-      end
-
-      def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
-        if (0..7).cover?(data_x) && (0..7).cover?(data_y)
-          chessman.new(
-            img,
-            # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
+      def self.piece data_x, data_y, width, height, transparency = 1.0, d
+        if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
+          self.new(
+            IMG,
+              # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
             width: width, height: height,
             color: [1.0, 1.0, 1.0, transparency],
             rotate: 0,
@@ -94,8 +89,18 @@ module Chess
             data: [data_x, data_y],
             get_class: self.class
           )
+        end
       end
-    end
+
+      def piece data_x, data_y, width, height, transparency = 1.0, d
+        self.class.piece data_x, data_y, width, height, transparency = 1.0, d
+      end # метод экземпляра
+
+      private
+
+      def piece_for_path x, y
+        piece x, y, 100, 100, 0.6, -10
+      end
     end
   end
 end
