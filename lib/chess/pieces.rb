@@ -71,6 +71,10 @@ module Chess
         @pieces_path
       end
 
+      def mark array, x, y
+        piece self.class, array[y][x].img, x, y, 120, 120, 0.9, -20
+      end
+
       private
 
       def piece_for_path chessman, img, x, y

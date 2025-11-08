@@ -80,7 +80,7 @@ module Chess
 
     def mark_piece x, y
       if is_my_piece?(x, y)
-        @show_marked_piece = piece_for_mark Knight, @array[y][x].img, x, y
+        @show_marked_piece = @array[y][x].mark array, x, y
         @mark_cordinates = [y, x]
         @mark_turn = !@mark_turn
       end
@@ -88,7 +88,7 @@ module Chess
     
     def show_path x, y
       if is_my_piece?(x, y)
-        @array[y][x].path @array, x, y
+        @path_squares = @array[y][x].path @array, x, y
       end
     end
      
@@ -107,7 +107,7 @@ module Chess
       @mark_turn = !@mark_turn
     end
 
-    def cancel_show_path
+    def cancel_show_path x, y
       p "@path_squares: #{@path_squares}"
       @path_squares = @path_squares.reject(&:nil?).each(&:remove)
       @path_squares = []
@@ -131,8 +131,8 @@ module Chess
       show_path x, y 
     end
 
-    def undo_mark
-      cancel_show_path
+    def undo_mark x, y
+      cancel_show_path x, y
 
       unmark_piece
     end
@@ -142,7 +142,7 @@ module Chess
 
       make_move x, y
 
-      undo_mark
+      undo_mark x, y 
     end
   end
 end
