@@ -63,7 +63,7 @@ module Chess
     # end
     
     def initialize_pawns row_pawns
-      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.piece column_pawn, row_pawns, 80, 80, 0}
+      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.piece column_pawn, row_pawns, 80, 80, 1.0, self.class, 0}
       p "=========1"
       p @array[row_pawns]
       p "=========2"
@@ -93,6 +93,10 @@ module Chess
     
     def show_path x, y
       if is_my_piece?(x, y)
+        p "show1"
+        p @array[y][x].get_class
+        p self.class
+        p "show2"
         @path_squares = @array[y][x].path @array, x, y
       end
     end

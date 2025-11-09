@@ -38,10 +38,8 @@ on :mouse_down do |event|
   when :left
     t.remove unless t.nil?
     if Chess::Logic.players_turn
-      p "==========Player 1===="
       player1.logic event.x, event.y
     else
-      p "==========Player 2===="
       player2.logic event.x, event.y
     end
     t = Text.new(

@@ -3,7 +3,7 @@ module Chess
     class PieceImage < Image
       attr_accessor :get_class, :pieces_path  
       attr_accessor :data 
-
+     
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
@@ -35,6 +35,34 @@ module Chess
           raise IndexError, "Неверный индекс"
         end
       end
+
+      def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
+        if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
+          self.new(
+            @img,
+              # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
+            width: width, height: height,
+            color: [1.0, 1.0, 1.0, transparency],
+            rotate: 0,
+            z: 0,
+            d: 0,
+            data: [data_x, data_y],
+            get_class: get_class
+          )
+        end
+      end
+
+      def piece data_x, data_y, width, height, transparency, d
+        self.class.piece data_x, data_y, width, height, transparency, d
+      end # метод экземпляра
+
+      def mark x, y
+        piece x, y, 120, 120, 0.9, -20
+      end
+
+      def piece_for_path x, y
+        piece x, y, 100, 100, 0.6, -10
+      end
     end
 
     class Pawn < PieceImage
@@ -44,7 +72,7 @@ module Chess
     end
 
     class Knight < PieceImage
-      IMG = 'images/knight_black.png'
+      @img = 'images/knight_black.png'
 
       def path array, x, y
         arr1 = []; arr2 = []
@@ -54,7 +82,6 @@ module Chess
         (0..7).cover?(x+2) ? arr2.push(x+1,x+2) : arr2.push(nil,nil)
         p "arr1 : #{arr1}"
         p "arr2 : #{arr2}"
-        # hash = {"Player1" => [y-2,y-1,y+1,y+2]}#, ,y-2 "Player2" => [y+1,y+2,y+2]}
         arr1.map.with_index do |dy, index|
           @pieces_path << piece_for_path(x+1, dy) if index == 0
           @pieces_path << piece_for_path(x-1, dy) if index == 0
@@ -69,37 +96,7 @@ module Chess
           @pieces_path << piece_for_path(dx, y+1) if index == 3
           @pieces_path << piece_for_path(dx, y-1) if index == 3
         end
-        @pieces_path
-      end
-
-      def mark x, y
-        piece x, y, 120, 120, 0.9, -20
-      end
-
-      def self.piece data_x, data_y, width, height, transparency = 1.0, d
-        if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
-          self.new(
-            IMG,
-              # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
-            width: width, height: height,
-            color: [1.0, 1.0, 1.0, transparency],
-            rotate: 0,
-            z: 0,
-            d: d,
-            data: [data_x, data_y],
-            get_class: self.class
-          )
-        end
-      end
-
-      def piece data_x, data_y, width, height, transparency = 1.0, d
-        self.class.piece data_x, data_y, width, height, transparency = 1.0, d
-      end # метод экземпляра
-
-      private
-
-      def piece_for_path x, y
-        piece x, y, 100, 100, 0.6, -10
+        @pieces_path # нужна ли эта переменная, неплохо бы переменную с ходами или базу
       end
     end
   end
