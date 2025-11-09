@@ -64,6 +64,9 @@ module Chess
     
     def initialize_pawns row_pawns
       @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.piece column_pawn, row_pawns, 80, 80, 0}
+      p "=========1"
+      p @array[row_pawns]
+      p "=========2"
     end
 
     def initialize_officers row_officers, *paths
@@ -71,7 +74,9 @@ module Chess
     end
 
     def is_my_piece? x, y
-      true #!@array[y][x].nil? && @array[y][x].get_class == self.class
+      p @array[y][x].get_class
+      p self.class
+      !@array[y][x].nil? && @array[y][x].get_class == self.class
     end
 
     def is_enemy_piece? x, y
@@ -117,6 +122,7 @@ module Chess
     def make_move x, y
       if @array[y][x].nil?
         @array[y][x] = @array[@mark_cordinates[0]][@mark_cordinates[1]]
+        p "@array[@mark_cordinates[0]][@mark_cordinates[1]] #{@array[@mark_cordinates[0]][@mark_cordinates[1]]}"
         @array[@mark_cordinates[0]][@mark_cordinates[1]].remove
         @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
         @array[y][x].new_coordinates x, y, 0

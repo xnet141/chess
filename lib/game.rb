@@ -37,14 +37,9 @@ on :mouse_down do |event|
   case event.button
   when :left
     t.remove unless t.nil?
-    # puts event.x, event.y
     if Chess::Logic.players_turn
       p "==========Player 1===="
       player1.logic event.x, event.y
-      # player1.array.each do |raw|
-      #   puts raw.inspect
-      #   puts
-      # end
     else
       p "==========Player 2===="
       player2.logic event.x, event.y
