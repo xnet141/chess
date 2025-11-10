@@ -89,6 +89,7 @@
 p "==="
 
 class Polka
+  @@b = 'bbbbbbbbbbbb'
   @a = "Alex - superdev"
     class << self
       attr_accessor :a
@@ -97,11 +98,56 @@ class Polka
     p @a * 3
   end
   def get_a
+    @a = "!!!!!!fsdfsdfsdfsdfsd"
     self.class.a
   end
+  def instance
+    p @a.class
+    p @b.class
+  end
+  def bb
+    @@b
+  end
+
+end
+
+class Stol < Polka
+  @a = "stol" # @a - переменная объекта-класса
+
 end
 # p Polka.a
 # p Polka.aaa
 # p Polka.methods
 
 p Polka.new.get_a
+polka = Polka.new
+
+p polka.instance
+p polka.inspect
+
+p Stol.new.get_a
+p Stol.new.bb
+
+class Divan < Polka
+  @@b = 'odnushka v Skolkovo' 
+end
+
+class Kover < Divan
+  @@b = 'Shushari' 
+  def self.asdf
+    @@b = 'dsadasdasdasdasdasdasdasdasd'
+  end
+end
+
+
+p "=" * 5
+p Divan.new.bb
+p Polka.new.bb
+p Stol.new.bb
+
+Kover.asdf
+
+p "=" * 5
+p Divan.new.bb
+p Polka.new.bb
+p Stol.new.bb

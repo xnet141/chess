@@ -12,11 +12,12 @@ module Chess
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
-        @pieces_path = []
         @piece_name = piece_name
         @d = d
         @data = data
         @get_class = get_class
+        @count = nil
+        @pieces_path = []
         new_coordinates @data[0], @data[1], @d     
       end
 
@@ -25,9 +26,9 @@ module Chess
         @y = y * GRID_SIZE + GRID_SIZE + 10 + d 
         @data = x, y    
       end
-      # def []=(index, value)
-      #   @data[index] = value
-      # end
+      
+      # def []=(index, value); @data[index] = value; end
+
       def [](index)
         if index.is_a?(Integer) && index >= 0 && index < @data.size
           @data[index]
@@ -67,7 +68,9 @@ module Chess
 
     class Pawn < PieceImage
       def path
-        
+        @count += 1
+        # первый ход у пешки - на 2 клетки
+        # кушает по диагонали
       end
     end
 

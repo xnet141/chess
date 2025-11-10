@@ -70,7 +70,7 @@ module Chess
     end
 
     def initialize_officers row_officers, *paths
-      @array[row_officers] = paths.map.with_index {|path, column_officer| piece path, column_officer, row_officers, 80, 80, 0}
+      @array[row_officers] = paths.map.with_index {|path, column_officer| Knight.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
     end
 
     def is_my_piece? x, y
