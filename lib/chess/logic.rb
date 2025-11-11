@@ -40,9 +40,9 @@ module Chess
 
     # def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
     
-    def initialize_pawns row_pawns # methods
- 
-      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.black column_pawn, row_pawns, 80, 80, 1.0, self.class, 0}
+    def initialize_pawns(row_pawns ,color)
+      
+      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.send(color, column_pawn, row_pawns, 80, 80, 1.0, self.class, 0)}
       p "=========1"
       p @array[row_pawns]
 
