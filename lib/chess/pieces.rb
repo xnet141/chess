@@ -53,6 +53,16 @@ module Chess
         end
       end
 
+      def self.white data_x, data_y, width, height, transparency, get_class, d
+        @img = 'images/knight_white.png'
+        self.piece data_x, data_y, width, height, transparency, get_class, d
+      end
+      
+      def self.black data_x, data_y, width, height, transparency, get_class, d
+        @img = 'images/knight_black.png'
+        self.piece data_x, data_y, width, height, transparency, get_class, d
+      end
+
       def piece data_x, data_y, width, height, transparency, d
         self.class.piece data_x, data_y, width, height, transparency, d
       end # метод экземпляра
@@ -75,7 +85,7 @@ module Chess
     end
 
     class Knight < PieceImage
-      @img = 'images/knight_black.png'
+      
 
       def path array, x, y
         arr1 = []; arr2 = []

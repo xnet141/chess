@@ -27,7 +27,7 @@ Image.new(
   color: [1.0, 1.0, 1.0, 1.0],
   rotate: 0,
   z: 0,
-  )
+)
   
 player1 = Chess::Player1.new
 player2 = Chess::Player2.new
