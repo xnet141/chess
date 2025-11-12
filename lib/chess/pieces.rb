@@ -1,7 +1,7 @@
 module Chess
   module Pieces
     class PieceImage < Image
-      attr_accessor :get_class, :pieces_path  
+      attr_accessor :get_class, :pieces_path, :img_instance  
       attr_accessor :data 
      
       def initialize(path, atlas: nil,
@@ -12,6 +12,7 @@ module Chess
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
+        @img_instance = path
         @piece_name = piece_name
         @d = d
         @data = data
@@ -38,6 +39,7 @@ module Chess
       end
 
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
+        # p "@img_instance: #{self.img_instance}"
         if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
           self.new(
             @img,
@@ -64,10 +66,12 @@ module Chess
       end
 
       def piece data_x, data_y, width, height, transparency, d
+        # @array[data_y][data_x].get_class == Player1 ? self.class.white : self.class.black
         self.class.piece data_x, data_y, width, height, transparency, d
       end # метод экземпляра
 
       def mark x, y
+        # p "!*!*!@array: #{player}"
         piece x, y, 120, 120, 0.9, -20
       end
 
@@ -75,7 +79,7 @@ module Chess
         piece x, y, 100, 100, 0.6, -10
       end
     end
-
+    
     class Pawn < PieceImage
       def path
         @count += 1
@@ -83,11 +87,9 @@ module Chess
         # кушает по диагонали
       end
     end
-
+    
     class Knight < PieceImage
-      
-
-      def path array, x, y
+      def path x, y
         arr1 = []; arr2 = []
         (0..7).cover?(y-2) ? arr1.push(y-2,y-1) : arr1.push(nil,nil)
         (0..7).cover?(y+2) ? arr1.push(y+1,y+2) : arr1.push(nil,nil)

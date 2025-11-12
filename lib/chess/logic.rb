@@ -43,10 +43,10 @@ module Chess
     def initialize_pawns(row_pawns ,color)
       
       @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.send(color, column_pawn, row_pawns, 80, 80, 1.0, self.class, 0)}
-      p "=========1"
+      p "=========**********************************1"
       p @array[row_pawns]
 
-      p "=========2"
+      p "=========**********************************2"
     end
 
     def initialize_officers row_officers, *paths
@@ -79,7 +79,7 @@ module Chess
         p @array[y][x].get_class
         p self.class
         p "show2"
-        @path_squares = @array[y][x].path @array, x, y
+        @path_squares = @array[y][x].path x, y
       end
     end
      
