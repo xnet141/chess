@@ -55,14 +55,12 @@ module Chess
         end
       end
 
-      def self.white data_x, data_y, width, height, transparency, get_class, d
+      def self.white
         @img = 'images/knight_white.png'
-        self.piece data_x, data_y, width, height, transparency, get_class, d
       end
       
-      def self.black data_x, data_y, width, height, transparency, get_class, d
+      def self.black
         @img = 'images/knight_black.png'
-        self.piece data_x, data_y, width, height, transparency, get_class, d
       end
 
       def piece data_x, data_y, width, height, transparency, d

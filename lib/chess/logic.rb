@@ -40,18 +40,16 @@ module Chess
 
     # def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
     
-    def initialize_pawns(row_pawns ,color)
-      
-      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.send(color, column_pawn, row_pawns, 80, 80, 1.0, self.class, 0)}
+    def initialize_pawns(row_pawns, color)
+      Knight.send(color) 
+      @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.piece column_pawn, row_pawns, 80, 80, 1.0, self.class, 0}
       p "=========**********************************1"
       p @array[row_pawns]
-
       p "=========**********************************2"
     end
 
     def initialize_officers row_officers, *paths
       @array[row_officers] = paths.map.with_index {|path, column_officer| Knight.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
-      
     end
 
     def is_my_piece? x, y
@@ -64,7 +62,12 @@ module Chess
       !@array[y][x].nil? && @array[y][x].get_class != self.class
     end
 
+    def color_piece x, y
+      @array[y][x].get_class == Player1 ? Knight.white : Knight.black
+    end
+
     def mark_piece x, y
+      #color
       if is_my_piece?(x, y)
         @show_marked_piece = @array[y][x].mark x, y
         p "mark_piece: #{@array[y][x].inspect}"
@@ -74,6 +77,7 @@ module Chess
     end
     
     def show_path x, y
+      #color
       if is_my_piece?(x, y)
         p "show1"
         p @array[y][x].get_class
@@ -118,6 +122,8 @@ module Chess
     end
 
     def process_mark x, y
+      color_piece x, y
+
       mark_piece x, y
       
       show_path x, y 
