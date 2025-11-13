@@ -18,7 +18,7 @@ module Chess
         @data = data
         @get_class = get_class
         @count = nil
-        @pieces_path = []
+        # @pieces_path = [] # temp_arr
         new_coordinates @data[0], @data[1], @d     
       end
 
@@ -48,19 +48,11 @@ module Chess
             color: [1.0, 1.0, 1.0, transparency],
             rotate: 0,
             z: 0,
-            d: 0,
+            d: d,
             data: [data_x, data_y],
             get_class: get_class
           )
         end
-      end
-
-      def self.white
-        @img = 'images/knight_white.png'
-      end
-      
-      def self.black
-        @img = 'images/knight_black.png'
       end
 
       def piece data_x, data_y, width, height, transparency, d
@@ -85,9 +77,51 @@ module Chess
         # кушает по диагонали
       end
     end
+
+    class Rook < PieceImage
+      def self.white
+        @img = 'images/rook_white.png'
+      end
+      
+      def self.black
+        @img = 'images/rook_black.png'
+      end
+
+      def path x, y
+        temp_arr = []
+        # i = 1
+        dy = y; dx = x
+        while dy <= 7 do
+          dy +=1
+          temp_arr << piece_for_path(x, dy)
+        end
+        while dy >= 0 do
+          dy -=1
+          temp_arr << piece_for_path(x, dy)
+        end
+        while dx <= 7 do
+          dx +=1
+          temp_arr << piece_for_path(dx, y)
+        end
+        while dx >= 0 do
+          dx -=1
+          temp_arr << piece_for_path(dx, y)
+        end
+        temp_arr
+      end
+    end
     
     class Knight < PieceImage
+      def self.white
+        @img = 'images/knight_white.png'
+      end
+      
+      def self.black
+        @img = 'images/knight_black.png'
+      end
+
       def path x, y
+        temp_arr = []
         arr1 = []; arr2 = []
         (0..7).cover?(y-2) ? arr1.push(y-2,y-1) : arr1.push(nil,nil)
         (0..7).cover?(y+2) ? arr1.push(y+1,y+2) : arr1.push(nil,nil)
@@ -96,20 +130,20 @@ module Chess
         p "arr1 : #{arr1}"
         p "arr2 : #{arr2}"
         arr1.map.with_index do |dy, index|
-          @pieces_path << piece_for_path(x+1, dy) if index == 0
-          @pieces_path << piece_for_path(x-1, dy) if index == 0
-          @pieces_path << piece_for_path(x, dy)
-          @pieces_path << piece_for_path(x+1, dy) if index == 3
-          @pieces_path << piece_for_path(x-1, dy) if index == 3
+          temp_arr << piece_for_path(x+1, dy) if index == 0
+          temp_arr << piece_for_path(x-1, dy) if index == 0
+          temp_arr << piece_for_path(x, dy)
+          temp_arr << piece_for_path(x+1, dy) if index == 3
+          temp_arr << piece_for_path(x-1, dy) if index == 3
         end
         arr2.map.with_index do |dx, index|
-          @pieces_path << piece_for_path(dx, y+1) if index == 0
-          @pieces_path << piece_for_path(dx, y-1) if index == 0
-          @pieces_path << piece_for_path(dx, y)
-          @pieces_path << piece_for_path(dx, y+1) if index == 3
-          @pieces_path << piece_for_path(dx, y-1) if index == 3
+          temp_arr << piece_for_path(dx, y+1) if index == 0
+          temp_arr << piece_for_path(dx, y-1) if index == 0
+          temp_arr << piece_for_path(dx, y)
+          temp_arr << piece_for_path(dx, y+1) if index == 3
+          temp_arr << piece_for_path(dx, y-1) if index == 3
         end
-        @pieces_path # нужна ли эта переменная, неплохо бы переменную с ходами или базу
+        temp_arr # нужна ли эта переменная, неплохо бы переменную с ходами или базу
       end
     end
   end

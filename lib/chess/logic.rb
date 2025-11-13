@@ -40,7 +40,7 @@ module Chess
 
     # def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
     
-    def initialize_pawns(row_pawns, color)
+    def initialize_pawns row_pawns, color
       Knight.send(color) 
       @array[row_pawns].map!.with_index  {|item, column_pawn| Knight.piece column_pawn, row_pawns, 80, 80, 1.0, self.class, 0}
       p "=========**********************************1"
@@ -48,12 +48,14 @@ module Chess
       p "=========**********************************2"
     end
 
-    def initialize_officers row_officers, *paths
-      @array[row_officers] = paths.map.with_index {|path, column_officer| Knight.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
+    def initialize_officers row_officers, color #*paths
+      Rook.send(color) 
+      # @array[row_officers] = paths.map.with_index {|path, column_officer| Knight.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
+      @array[row_officers].map!.with_index  {|item, column_officer| Rook.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
     end
 
     def is_my_piece? x, y
-      p @array[y][x].get_class
+      # p @array[y][x].get_class
       p self.class
       !@array[y][x].nil? && @array[y][x].get_class == self.class
     end
@@ -63,7 +65,8 @@ module Chess
     end
 
     def color_piece x, y
-      @array[y][x].get_class == Player1 ? Knight.white : Knight.black
+      return if @array[y][x].nil?
+      @array[y][x].get_class == Player1 ? @array[y][x].class.white : @array[y][x].class.black
     end
 
     def mark_piece x, y
