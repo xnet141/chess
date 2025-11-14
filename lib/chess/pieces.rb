@@ -41,7 +41,7 @@ module Chess
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
         if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
           self.new(
-            @img,
+            @img ||= 'images/pawn_black.png',
               # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
             width: width, height: height,
             color: [1.0, 1.0, 1.0, transparency],
@@ -63,8 +63,19 @@ module Chess
         piece x, y, 120, 120, 0.9, -20
       end
 
+      def self.piece_for_path x, y
+        self.piece x, y, 100, 100, 0.6, -10
+      end
+
       def piece_for_path x, y
-        piece x, y, 100, 100, 0.6, -10
+        self.class.piece_for_path x, y
+      end
+
+      def self.path x, y
+      end
+
+      def path x, y
+        self.class.path x, y
       end
     end
     
@@ -121,7 +132,9 @@ module Chess
         @img = 'images/rook_black.png'
       end
 
-      def path x, y
+      def self.path x, y
+        super
+
         temp_arr = []
         # i = 1
         dy = y; dx = x 
@@ -159,7 +172,9 @@ module Chess
         @img = 'images/bishop_black.png'
       end
 
-      def path x, y
+      def self.path x, y
+        super
+
         temp_arr = []
         dy = y; dx = x
         while dy <= 7 && dx <= 7 do
@@ -186,6 +201,22 @@ module Chess
           temp_arr << piece_for_path(dx, dy)
         end
         temp_arr
+      end
+    end
+
+    class Queen < PieceImage
+      def self.white
+        @img = 'images/queen_white.png'
+      end
+      
+      def self.black
+        @img = 'images/queen_black.png'
+      end
+
+      def path x, y 
+        rook = Chess::Pieces::Rook.path x, y
+        bishop = Chess::Pieces::Bishop.path x, y
+        bishop
       end
     end
   end

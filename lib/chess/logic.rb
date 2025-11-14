@@ -49,9 +49,9 @@ module Chess
     end
 
     def initialize_officers row_officers, color #*paths
-      Rook.send(color) 
+      Queen.send(color) 
       # @array[row_officers] = paths.map.with_index {|path, column_officer| Knight.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
-      @array[row_officers].map!.with_index  {|item, column_officer| Rook.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
+      @array[row_officers].map!.with_index  {|item, column_officer| Queen.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0}
     end
 
     def is_my_piece? x, y
