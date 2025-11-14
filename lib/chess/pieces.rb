@@ -39,7 +39,6 @@ module Chess
       end
 
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
-        # p "@img_instance: #{self.img_instance}"
         if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
           self.new(
             @img,
@@ -56,7 +55,6 @@ module Chess
       end
 
       def piece data_x, data_y, width, height, transparency, d
-        # @array[data_y][data_x].get_class == Player1 ? self.class.white : self.class.black
         self.class.piece data_x, data_y, width, height, transparency, d
       end # метод экземпляра
 
@@ -75,39 +73,6 @@ module Chess
         @count += 1
         # первый ход у пешки - на 2 клетки
         # кушает по диагонали
-      end
-    end
-
-    class Rook < PieceImage
-      def self.white
-        @img = 'images/rook_white.png'
-      end
-      
-      def self.black
-        @img = 'images/rook_black.png'
-      end
-
-      def path x, y
-        temp_arr = []
-        # i = 1
-        dy = y; dx = x
-        while dy <= 7 do
-          dy +=1
-          temp_arr << piece_for_path(x, dy)
-        end
-        while dy >= 0 do
-          dy -=1
-          temp_arr << piece_for_path(x, dy)
-        end
-        while dx <= 7 do
-          dx +=1
-          temp_arr << piece_for_path(dx, y)
-        end
-        while dx >= 0 do
-          dx -=1
-          temp_arr << piece_for_path(dx, y)
-        end
-        temp_arr
       end
     end
     
@@ -144,6 +109,83 @@ module Chess
           temp_arr << piece_for_path(dx, y-1) if index == 3
         end
         temp_arr # нужна ли эта переменная, неплохо бы переменную с ходами или базу
+      end
+    end
+
+    class Rook < PieceImage
+      def self.white
+        @img = 'images/rook_white.png'
+      end
+      
+      def self.black
+        @img = 'images/rook_black.png'
+      end
+
+      def path x, y
+        temp_arr = []
+        # i = 1
+        dy = y; dx = x 
+        # p "==!!== dy, dx #{dy}, #{dx}===!!==="
+        while dy <= 7 do
+          dy +=1
+          temp_arr << piece_for_path(x, dy)
+        end
+        dy = y; dx = x
+        while dy >= 0 do
+          dy -=1
+          temp_arr << piece_for_path(x, dy)
+        end
+        dy = y; dx = x
+        while dx <= 7 do
+          dx +=1
+          temp_arr << piece_for_path(dx, y)
+        end
+        dy = y; dx = x
+        while dx >= 0 do
+          dx -=1
+          temp_arr << piece_for_path(dx, y)
+        end
+        p "@@@@@ == temp_arr.length#{temp_arr.length}"
+        temp_arr
+      end
+    end
+
+    class Bishop < PieceImage
+      def self.white
+        @img = 'images/bishop_white.png'
+      end
+      
+      def self.black
+        @img = 'images/bishop_black.png'
+      end
+
+      def path x, y
+        temp_arr = []
+        dy = y; dx = x
+        while dy <= 7 && dx <= 7 do
+          dy +=1
+          dx +=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        dy = y; dx = x
+        while dy <= 7 && dx >= 0 do
+          dy +=1
+          dx -=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        dy = y; dx = x
+        while dy >= 0 && dx >= 0 do
+          dy -=1
+          dx -=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        dy = y; dx = x
+        while dy >= 0 && dx <= 7 do
+          dy -=1
+          dx +=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        temp_arr
       end
     end
   end
