@@ -63,20 +63,20 @@ module Chess
         piece x, y, 120, 120, 0.9, -20
       end
 
-      def self.piece_for_path x, y
-        self.piece x, y, 100, 100, 0.6, -10
-      end
-
       def piece_for_path x, y
-        self.class.piece_for_path x, y
+        piece x, y, 100, 100, 0.6, -10
       end
 
-      def self.path x, y
-      end
+      # def piece_for_path x, y
+      #   self.class.piece_for_path x, y
+      # end
 
-      def path x, y
-        self.class.path x, y
-      end
+      # def self.path x, y
+      # end
+
+      # def path x, y
+      #   self.class.path x, y
+      # end
     end
     
     class Pawn < PieceImage
@@ -132,9 +132,7 @@ module Chess
         @img = 'images/rook_black.png'
       end
 
-      def self.path x, y
-        super
-
+      def path x, y
         temp_arr = []
         # i = 1
         dy = y; dx = x 
@@ -172,9 +170,7 @@ module Chess
         @img = 'images/bishop_black.png'
       end
 
-      def self.path x, y
-        super
-
+      def path x, y
         temp_arr = []
         dy = y; dx = x
         while dy <= 7 && dx <= 7 do
@@ -213,10 +209,88 @@ module Chess
         @img = 'images/queen_black.png'
       end
 
-      def path x, y 
-        rook = Chess::Pieces::Rook.path x, y
-        bishop = Chess::Pieces::Bishop.path x, y
-        bishop
+      def path x, y  # попробовать сократить метод, убрать dy, почистить dx
+        temp_arr = []
+        # i = 1
+        dy = y; dx = x 
+        # p "==!!== dy, dx #{dy}, #{dx}===!!==="
+        while dy <= 7 do
+          dy +=1
+          temp_arr << piece_for_path(x, dy)
+        end
+        dy = y; dx = x
+        while dy >= 0 do
+          dy -=1
+          temp_arr << piece_for_path(x, dy)
+        end
+        dy = y; dx = x
+        while dx <= 7 do
+          dx +=1
+          temp_arr << piece_for_path(dx, y)
+        end
+        dy = y; dx = x
+        while dx >= 0 do
+          dx -=1
+          temp_arr << piece_for_path(dx, y)
+        end
+
+        dy = y; dx = x
+        while dy <= 7 && dx <= 7 do
+          dy +=1
+          dx +=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        dy = y; dx = x
+        while dy <= 7 && dx >= 0 do
+          dy +=1
+          dx -=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        dy = y; dx = x
+        while dy >= 0 && dx >= 0 do
+          dy -=1
+          dx -=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        dy = y; dx = x
+        while dy >= 0 && dx <= 7 do
+          dy -=1
+          dx +=1
+          temp_arr << piece_for_path(dx, dy)
+        end
+        temp_arr
+      end
+    end
+
+    class King < PieceImage
+      def self.white
+        @img = 'images/king_white.png'
+      end
+    
+      def self.black
+        @img = 'images/king_black.png'
+      end
+
+      def path x, y
+        temp_arr = []
+
+        temp_arr << piece_for_path(x, y + 1)
+
+        temp_arr << piece_for_path(x, y - 1)
+
+        temp_arr << piece_for_path(x + 1, y)
+
+        temp_arr << piece_for_path(x - 1, y)
+
+        temp_arr << piece_for_path(x + 1, y + 1)
+
+        temp_arr << piece_for_path(x - 1, y - 1)
+
+        temp_arr << piece_for_path(x + 1, y - 1)
+
+        temp_arr << piece_for_path(x - 1, y + 1) 
+
+        temp_arr
       end
     end
   end
