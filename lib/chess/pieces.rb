@@ -38,10 +38,14 @@ module Chess
         end
       end
 
+      class << self
+        attr_reader :img
+      end
+
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
         if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
           self.new(
-            @img ||= 'images/pawn_black.png',
+            @img,# ||= 'images/pawn_black.png',
               # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
             width: width, height: height,
             color: [1.0, 1.0, 1.0, transparency],
@@ -66,24 +70,33 @@ module Chess
       def piece_for_path x, y
         piece x, y, 100, 100, 0.6, -10
       end
-
-      # def piece_for_path x, y
-      #   self.class.piece_for_path x, y
-      # end
-
-      # def self.path x, y
-      # end
-
-      # def path x, y
-      #   self.class.path x, y
-      # end
     end
     
     class Pawn < PieceImage
-      def path
-        @count += 1
-        # первый ход у пешки - на 2 клетки
+      def self.white
+        @img = 'images/pawn_white.png'
+      end
+      
+      def self.black
+        @img = 'images/pawn_black.png'
+      end
+
+      def path x, y
+        # p "@img_instance : #{@img_instance}"
+        temp_arr = []
+        if @get_class == Player1
+          temp_arr << piece_for_path(x, y - 1)
+          temp_arr << piece_for_path(x, y - 2)
+        else
+          temp_arr << piece_for_path(x, y + 1)
+          temp_arr << piece_for_path(x, y + 2)
+        end
+
+        # @count += 1
+        # зависит от плеера или цвета
+        # первый ход у пешки - на 2 клетки вперед
         # кушает по диагонали
+        # назад не ест не ходит
       end
     end
     
@@ -134,29 +147,18 @@ module Chess
 
       def path x, y
         temp_arr = []
-        # i = 1
-        dy = y; dx = x 
-        # p "==!!== dy, dx #{dy}, #{dx}===!!==="
-        while dy <= 7 do
-          dy +=1
-          temp_arr << piece_for_path(x, dy)
+        7.times do |i|
+          i += 1
+          y1 = y + i
+          y2 = y - i   
+          x1 = x + i
+          x2 = x - i
+
+          temp_arr << piece_for_path(x, y1) if (0..7).cover?(y1)
+          temp_arr << piece_for_path(x, y2) if (0..7).cover?(y2)
+          temp_arr << piece_for_path(x1, y) if (0..7).cover?(x1)
+          temp_arr << piece_for_path(x2, y) if (0..7).cover?(x2)
         end
-        dy = y; dx = x
-        while dy >= 0 do
-          dy -=1
-          temp_arr << piece_for_path(x, dy)
-        end
-        dy = y; dx = x
-        while dx <= 7 do
-          dx +=1
-          temp_arr << piece_for_path(dx, y)
-        end
-        dy = y; dx = x
-        while dx >= 0 do
-          dx -=1
-          temp_arr << piece_for_path(dx, y)
-        end
-        p "@@@@@ == temp_arr.length#{temp_arr.length}"
         temp_arr
       end
     end
@@ -172,29 +174,17 @@ module Chess
 
       def path x, y
         temp_arr = []
-        dy = y; dx = x
-        while dy <= 7 && dx <= 7 do
-          dy +=1
-          dx +=1
-          temp_arr << piece_for_path(dx, dy)
-        end
-        dy = y; dx = x
-        while dy <= 7 && dx >= 0 do
-          dy +=1
-          dx -=1
-          temp_arr << piece_for_path(dx, dy)
-        end
-        dy = y; dx = x
-        while dy >= 0 && dx >= 0 do
-          dy -=1
-          dx -=1
-          temp_arr << piece_for_path(dx, dy)
-        end
-        dy = y; dx = x
-        while dy >= 0 && dx <= 7 do
-          dy -=1
-          dx +=1
-          temp_arr << piece_for_path(dx, dy)
+        7.times do |i|
+          i += 1
+          y1 = y + i
+          y2 = y - i   
+          x1 = x + i
+          x2 = x - i
+
+          temp_arr << piece_for_path(x1, y1) if (0..7).cover?(x1) && (0..7).cover?(y1)
+          temp_arr << piece_for_path(x2, y2) if (0..7).cover?(x2) && (0..7).cover?(y2)
+          temp_arr << piece_for_path(x1, y2) if (0..7).cover?(x1) && (0..7).cover?(y2)
+          temp_arr << piece_for_path(x2, y1) if (0..7).cover?(x2) && (0..7).cover?(y1) 
         end
         temp_arr
       end
@@ -209,54 +199,23 @@ module Chess
         @img = 'images/queen_black.png'
       end
 
-      def path x, y  # попробовать сократить метод, убрать dy, почистить dx
+      def path x, y
         temp_arr = []
-        # i = 1
-        dy = y; dx = x 
-        # p "==!!== dy, dx #{dy}, #{dx}===!!==="
-        while dy <= 7 do
-          dy +=1
-          temp_arr << piece_for_path(x, dy)
-        end
-        dy = y; dx = x
-        while dy >= 0 do
-          dy -=1
-          temp_arr << piece_for_path(x, dy)
-        end
-        dy = y; dx = x
-        while dx <= 7 do
-          dx +=1
-          temp_arr << piece_for_path(dx, y)
-        end
-        dy = y; dx = x
-        while dx >= 0 do
-          dx -=1
-          temp_arr << piece_for_path(dx, y)
-        end
+        7.times do |i|
+          i += 1
+          y1 = y + i
+          y2 = y - i   
+          x1 = x + i
+          x2 = x - i
 
-        dy = y; dx = x
-        while dy <= 7 && dx <= 7 do
-          dy +=1
-          dx +=1
-          temp_arr << piece_for_path(dx, dy)
-        end
-        dy = y; dx = x
-        while dy <= 7 && dx >= 0 do
-          dy +=1
-          dx -=1
-          temp_arr << piece_for_path(dx, dy)
-        end
-        dy = y; dx = x
-        while dy >= 0 && dx >= 0 do
-          dy -=1
-          dx -=1
-          temp_arr << piece_for_path(dx, dy)
-        end
-        dy = y; dx = x
-        while dy >= 0 && dx <= 7 do
-          dy -=1
-          dx +=1
-          temp_arr << piece_for_path(dx, dy)
+          temp_arr << piece_for_path(x, y1) if (0..7).cover?(y1)
+          temp_arr << piece_for_path(x, y2) if (0..7).cover?(y2)
+          temp_arr << piece_for_path(x1, y) if (0..7).cover?(x1)
+          temp_arr << piece_for_path(x2, y) if (0..7).cover?(x2)
+          temp_arr << piece_for_path(x1, y1) if (0..7).cover?(x1) && (0..7).cover?(y1)
+          temp_arr << piece_for_path(x2, y2) if (0..7).cover?(x2) && (0..7).cover?(y2)
+          temp_arr << piece_for_path(x1, y2) if (0..7).cover?(x1) && (0..7).cover?(y2)
+          temp_arr << piece_for_path(x2, y1) if (0..7).cover?(x2) && (0..7).cover?(y1) 
         end
         temp_arr
       end
@@ -273,24 +232,15 @@ module Chess
 
       def path x, y
         temp_arr = []
-
         temp_arr << piece_for_path(x, y + 1)
-
         temp_arr << piece_for_path(x, y - 1)
-
         temp_arr << piece_for_path(x + 1, y)
-
         temp_arr << piece_for_path(x - 1, y)
-
         temp_arr << piece_for_path(x + 1, y + 1)
-
         temp_arr << piece_for_path(x - 1, y - 1)
-
         temp_arr << piece_for_path(x + 1, y - 1)
-
-        temp_arr << piece_for_path(x - 1, y + 1) 
-
-        temp_arr
+        temp_arr << piece_for_path(x - 1, y + 1)
+        # temp_arr
       end
     end
   end
