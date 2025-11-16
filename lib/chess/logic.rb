@@ -39,8 +39,6 @@ module Chess
 
     private
 
-    # def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
-    
     def initialize_pawns row_pawns, color
       Pawn.send(color)
       @array[row_pawns].map!.with_index {|item, column_pawn| Pawn.piece(column_pawn, row_pawns, 80, 80, 1.0, self.class, 0)}
@@ -66,13 +64,7 @@ module Chess
       !@array[y][x].nil? && @array[y][x].get_class != self.class
     end
 
-    # def color_piece x, y
-    #   return if @array[y][x].nil?
-    #   @array[y][x].get_class == Player1 ? @array[y][x].class.white : @array[y][x].class.black
-    # end
-
     def mark_piece x, y
-      #color
       if is_my_piece?(x, y)
         @show_marked_piece = @array[y][x].mark x, y
         p "mark_piece: #{@array[y][x].inspect}"
@@ -82,7 +74,6 @@ module Chess
     end
     
     def show_path x, y
-      #color
       if is_my_piece?(x, y)
         p "show1"
         p @array[y][x].get_class
@@ -127,8 +118,6 @@ module Chess
     end
 
     def process_mark x, y
-      # color_piece x, y
-
       mark_piece x, y
       
       show_path x, y 
