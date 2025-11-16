@@ -36,23 +36,23 @@ module Chess
         process_move x, y
       end
     end
-    
-    private 
+
+    private
 
     # def piece chessman, img, data_x, data_y, width, height, transparency = 1.0, d
     
     def initialize_pawns row_pawns, color
-      Pawn.send(color) 
-      @array[row_pawns].map!.with_index {|item, column_pawn| Pawn.piece column_pawn, row_pawns, 80, 80, 1.0, self.class, 0}
+      Pawn.send(color)
+      @array[row_pawns].map!.with_index {|item, column_pawn| Pawn.piece(column_pawn, row_pawns, 80, 80, 1.0, self.class, 0)}
       p "=========**********************************1"
       p @array[row_pawns]
       p "=========**********************************2"
     end
 
     def initialize_officers row_officers, color, chessmans#*paths
-      @array[row_officers] = chessmans.map.with_index do |chessman, column_officer| 
-        chessman.send(color) 
-        chessman.piece column_officer, row_officers, 80, 80, 1.0, self.class, 0
+      @array[row_officers] = chessmans.map.with_index do |chessman, column_officer|
+        chessman.send(color)
+        chessman.piece(column_officer, row_officers, 80, 80, 1.0, self.class, 0)
       end
     end
 
@@ -66,10 +66,10 @@ module Chess
       !@array[y][x].nil? && @array[y][x].get_class != self.class
     end
 
-    def color_piece x, y
-      return if @array[y][x].nil?
-      @array[y][x].get_class == Player1 ? @array[y][x].class.white : @array[y][x].class.black
-    end
+    # def color_piece x, y
+    #   return if @array[y][x].nil?
+    #   @array[y][x].get_class == Player1 ? @array[y][x].class.white : @array[y][x].class.black
+    # end
 
     def mark_piece x, y
       #color
@@ -127,7 +127,7 @@ module Chess
     end
 
     def process_mark x, y
-      color_piece x, y
+      # color_piece x, y
 
       mark_piece x, y
       

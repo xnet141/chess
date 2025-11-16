@@ -1,23 +1,24 @@
 module Chess
   module Pieces
     class PieceImage < Image
-      attr_accessor :get_class, :pieces_path, :img_instance  
-      attr_accessor :data 
+      attr_accessor :get_class #, :pieces_path, :img  
+      attr_accessor :data #, :color_piece 
      
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
-                    opacity: nil, show: true, piece_name: nil, d: nil, data: nil, get_class: nil)
+                    opacity: nil, show: true, piece_name: nil, d: nil, data: nil, get_class: nil, color_piece: nil)
         super(path, atlas: atlas,
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
                     opacity: opacity, show: show)
         @img_instance = path
-        @piece_name = piece_name
+        # @piece_name = piece_name
         @d = d
         @data = data
         @get_class = get_class
         @count = nil
+        # @color_piece = color_piece
         # @pieces_path = [] # temp_arr
         new_coordinates @data[0], @data[1], @d     
       end
@@ -41,11 +42,11 @@ module Chess
       class << self
         attr_reader :img
       end
-
+      
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
         if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
           self.new(
-            @img,# ||= 'images/pawn_black.png',
+            @img,
               # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
             width: width, height: height,
             color: [1.0, 1.0, 1.0, transparency],
@@ -53,14 +54,32 @@ module Chess
             z: 0,
             d: d,
             data: [data_x, data_y],
-            get_class: get_class
+            get_class: get_class,
+            # color_piece: @img
           )
         end
       end
 
-      def piece data_x, data_y, width, height, transparency, d
-        self.class.piece data_x, data_y, width, height, transparency, d
-      end # метод экземпляра
+      # def piece data_x, data_y, width, height, transparency, d
+      #   self.class.piece data_x, data_y, width, height, transparency, d
+      # end # метод экземпляра
+
+      def piece data_x, data_y, width, height, transparency, get_class = nil, d
+        if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
+          self.class.new(
+            @img_instance,
+              # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
+            width: width, height: height,
+            color: [1.0, 1.0, 1.0, transparency],
+            rotate: 0,
+            z: 0,
+            d: d,
+            data: [data_x, data_y],
+            get_class: get_class,
+            # color_piece: color_piece
+          )
+        end
+      end
 
       def mark x, y
         # p "!*!*!@array: #{player}"
