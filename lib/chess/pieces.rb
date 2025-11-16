@@ -1,13 +1,13 @@
 module Chess
   module Pieces
     class PieceImage < Image
-      attr_accessor :get_class
+      attr_reader :get_class
       attr_accessor :data
 
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
-                    opacity: nil, show: true, piece_name: nil, d: nil, data: nil, get_class: nil, color_piece: nil)
+                    opacity: nil, show: true, d: nil, data: nil, get_class: nil)
         super(path, atlas: atlas,
                     width: width, height: height, x: x, y: y, z: z,
                     rotate: rotate, color: color, colour: colour,
@@ -77,6 +77,10 @@ module Chess
     end
     
     class Pawn < PieceImage
+      def color_piece
+        
+      end
+
       def self.white
         @img = 'images/pawn_white.png'
       end
