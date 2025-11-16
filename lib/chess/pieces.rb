@@ -77,16 +77,8 @@ module Chess
     end
     
     class Pawn < PieceImage
-      def color_piece
-        
-      end
-
-      def self.white
-        @img = 'images/pawn_white.png'
-      end
-      
-      def self.black
-        @img = 'images/pawn_black.png'
+      def self.color_piece color
+        @img = {white: 'images/pawn_white.png', black: 'images/pawn_black.png'}[color]
       end
 
       def path x, y
@@ -109,12 +101,8 @@ module Chess
     end
     
     class Knight < PieceImage
-      def self.white
-        @img = 'images/knight_white.png'
-      end
-      
-      def self.black
-        @img = 'images/knight_black.png'
+      def self.color_piece color
+        @img = {white: 'images/knight_white.png', black: 'images/knight_black.png'}[color]
       end
 
       def path x, y
@@ -145,13 +133,9 @@ module Chess
     end
 
     class Rook < PieceImage
-      def self.white
-        @img = 'images/rook_white.png'
-      end
-      
-      def self.black
-        @img = 'images/rook_black.png'
-      end
+      def self.color_piece color
+        @img = {white: 'images/rook_white.png', black: 'images/rook_black.png'}[color]
+      end      
 
       def path x, y
         temp_arr = []
@@ -172,13 +156,9 @@ module Chess
     end
 
     class Bishop < PieceImage
-      def self.white
-        @img = 'images/bishop_white.png'
-      end
-      
-      def self.black
-        @img = 'images/bishop_black.png'
-      end
+      def self.color_piece color
+        @img = {white: 'images/bishop_white.png', black: 'images/bishop_black.png'}[color]
+      end    
 
       def path x, y
         temp_arr = []
@@ -199,13 +179,9 @@ module Chess
     end
 
     class Queen < PieceImage
-      def self.white
-        @img = 'images/queen_white.png'
-      end
-      
-      def self.black
-        @img = 'images/queen_black.png'
-      end
+      def self.color_piece color 
+        @img = {white: 'images/queen_white.png', black: 'images/queen_black.png'}[color]
+      end    
 
       def path x, y
         temp_arr = []
@@ -230,12 +206,8 @@ module Chess
     end
 
     class King < PieceImage
-      def self.white
-        @img = 'images/king_white.png'
-      end
-    
-      def self.black
-        @img = 'images/king_black.png'
+      def self.color_piece color
+        @img = {white: 'images/king_white.png', black: 'images/king_black.png'}[color]
       end
 
       def path x, y
