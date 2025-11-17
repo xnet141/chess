@@ -77,7 +77,7 @@ module Chess
     end
     
     class Pawn < PieceImage
-      def self.color_piece color
+      def self.img_and_color color
         @img = {white: 'images/pawn_white.png', black: 'images/pawn_black.png'}[color]
       end
 
@@ -101,8 +101,8 @@ module Chess
     end
     
     class Knight < PieceImage
-      def self.color_piece color
-        @img = {white: 'images/knight_white.png', black: 'images/knight_black.png'}[color]
+      def self.img_and_color color
+        @img = {white: 'images/pawn_white.png', black: 'images/pawn_black.png'}[color]
       end
 
       def path x, y
@@ -133,7 +133,7 @@ module Chess
     end
 
     class Rook < PieceImage
-      def self.color_piece color
+      def self.img_and_color color
         @img = {white: 'images/rook_white.png', black: 'images/rook_black.png'}[color]
       end      
 
@@ -156,7 +156,7 @@ module Chess
     end
 
     class Bishop < PieceImage
-      def self.color_piece color
+      def self.img_and_color color
         @img = {white: 'images/bishop_white.png', black: 'images/bishop_black.png'}[color]
       end    
 
@@ -179,7 +179,7 @@ module Chess
     end
 
     class Queen < PieceImage
-      def self.color_piece color 
+      def self.img_and_color color 
         @img = {white: 'images/queen_white.png', black: 'images/queen_black.png'}[color]
       end    
 
@@ -206,7 +206,7 @@ module Chess
     end
 
     class King < PieceImage
-      def self.color_piece color
+      def self.img_and_color color
         @img = {white: 'images/king_white.png', black: 'images/king_black.png'}[color]
       end
 

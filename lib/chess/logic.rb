@@ -40,7 +40,7 @@ module Chess
     private
 
     def initialize_pawns row_pawns, color
-      Pawn.send(:color_piece, color)
+      Pawn.send(:img_and_color, color)
       @array[row_pawns].map!.with_index {|item, column_pawn| Pawn.piece(column_pawn, row_pawns, 80, 80, 1.0, self.class, 0)}
       p "=========**********************************1"
       p @array[row_pawns]
@@ -49,7 +49,7 @@ module Chess
 
     def initialize_officers row_officers, color, chessmans#*paths
       @array[row_officers] = chessmans.map.with_index do |chessman, column_officer|
-        chessman.send(:color_piece, color)
+        chessman.send(:img_and_color, color)
         chessman.piece(column_officer, row_officers, 80, 80, 1.0, self.class, 0)
       end
     end
