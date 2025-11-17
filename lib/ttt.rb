@@ -35,12 +35,14 @@
 
 # wh(0) {|var|
 #   while var <= 7 do
-#     var +=1
+#     var +=1class
+  # end
 #     p var
 #   end
 # }
 
 class T
+  IMG = "const"
   @a = 10
   @@bb = 333
   def self.get_a
@@ -51,6 +53,12 @@ class T
   end
   def get_bb
     p @@bb
+  end
+  def self.get_const
+    p IMG
+  end
+  def self.get_class
+    p self.to_s.to_sym
   end
 end
 
@@ -81,6 +89,10 @@ p "=" * 22
 Child.get_a
 Child.get_bb
 Child.new.get_bb
+
+Child.get_const
+Child.get_class
+
 
 
 

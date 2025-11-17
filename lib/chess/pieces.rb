@@ -4,6 +4,15 @@ module Chess
       attr_reader :get_class
       attr_accessor :data
 
+      IMG = {
+        "Chess::Pieces::Pawn" => {white: 'images/pawn_white.png', black: 'images/pawn_black.png'},
+        "Chess::Pieces::Knight" => {white: 'images/knight_white.png', black: 'images/knight_black.png'},
+        "Chess::Pieces::Rook" => {white: 'images/rook_white.png', black: 'images/rook_black.png'},
+        "Chess::Pieces::Bishop" => {white: 'images/bishop_white.png', black: 'images/bishop_black.png'},
+        "Chess::Pieces::Queen" => {white: 'images/queen_white.png', black: 'images/queen_black.png'},
+        "Chess::Pieces::King" => {white: 'images/king_white.png', black: 'images/king_black.png'}
+      }
+
       def initialize(path, atlas: nil,
                     width: nil, height: nil, x: nil, y: nil, z: 0,
                     rotate: 0, color: nil, colour: nil,
@@ -32,6 +41,10 @@ module Chess
         else
           raise IndexError, "Неверный индекс"
         end
+      end
+
+      def self.img_and_color color
+        @img = IMG.fetch(self.to_s)[color]
       end
 
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
@@ -77,12 +90,7 @@ module Chess
     end
     
     class Pawn < PieceImage
-      def self.img_and_color color
-        @img = {white: 'images/pawn_white.png', black: 'images/pawn_black.png'}[color]
-      end
-
       def path x, y
-        # p "@img_instance : #{@img_instance}"
         temp_arr = []
         if @get_class == Player1
           temp_arr << piece_for_path(x, y - 1)
@@ -91,7 +99,6 @@ module Chess
           temp_arr << piece_for_path(x, y + 1)
           temp_arr << piece_for_path(x, y + 2)
         end
-
         # @count += 1
         # зависит от плеера или цвета
         # первый ход у пешки - на 2 клетки вперед
@@ -101,10 +108,6 @@ module Chess
     end
     
     class Knight < PieceImage
-      def self.img_and_color color
-        @img = {white: 'images/pawn_white.png', black: 'images/pawn_black.png'}[color]
-      end
-
       def path x, y
         temp_arr = []
         arr1 = []; arr2 = []
@@ -133,10 +136,6 @@ module Chess
     end
 
     class Rook < PieceImage
-      def self.img_and_color color
-        @img = {white: 'images/rook_white.png', black: 'images/rook_black.png'}[color]
-      end      
-
       def path x, y
         temp_arr = []
         7.times do |i|
@@ -156,10 +155,6 @@ module Chess
     end
 
     class Bishop < PieceImage
-      def self.img_and_color color
-        @img = {white: 'images/bishop_white.png', black: 'images/bishop_black.png'}[color]
-      end    
-
       def path x, y
         temp_arr = []
         7.times do |i|
@@ -179,10 +174,6 @@ module Chess
     end
 
     class Queen < PieceImage
-      def self.img_and_color color 
-        @img = {white: 'images/queen_white.png', black: 'images/queen_black.png'}[color]
-      end    
-
       def path x, y
         temp_arr = []
         7.times do |i|
@@ -206,10 +197,6 @@ module Chess
     end
 
     class King < PieceImage
-      def self.img_and_color color
-        @img = {white: 'images/king_white.png', black: 'images/king_black.png'}[color]
-      end
-
       def path x, y
         temp_arr = []
         temp_arr << piece_for_path(x, y + 1)
