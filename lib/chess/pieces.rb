@@ -5,12 +5,12 @@ module Chess
       attr_accessor :data
 
       IMG = {
-        "Chess::Pieces::Pawn" => {white: 'images/pawn_white.png', black: 'images/pawn_black.png'},
-        "Chess::Pieces::Knight" => {white: 'images/knight_white.png', black: 'images/knight_black.png'},
-        "Chess::Pieces::Rook" => {white: 'images/rook_white.png', black: 'images/rook_black.png'},
-        "Chess::Pieces::Bishop" => {white: 'images/bishop_white.png', black: 'images/bishop_black.png'},
-        "Chess::Pieces::Queen" => {white: 'images/queen_white.png', black: 'images/queen_black.png'},
-        "Chess::Pieces::King" => {white: 'images/king_white.png', black: 'images/king_black.png'}
+        Chess::Pieces.const_set(:Pawn, Class.new(self)) => {white: 'images/pawn_white.png', black: 'images/pawn_black.png'},
+        Chess::Pieces.const_set(:Knight, Class.new(self)) => {white: 'images/knight_white.png', black: 'images/knight_black.png'},
+        Chess::Pieces.const_set(:Rook, Class.new(self)) => {white: 'images/rook_white.png', black: 'images/rook_black.png'},
+        Chess::Pieces.const_set(:Bishop, Class.new(self)) => {white: 'images/bishop_white.png', black: 'images/bishop_black.png'},
+        Chess::Pieces.const_set(:Queen, Class.new(self)) => {white: 'images/queen_white.png', black: 'images/queen_black.png'},
+        Chess::Pieces.const_set(:King, Class.new(self)) => {white: 'images/king_white.png', black: 'images/king_black.png'}
       }
 
       def initialize(path, atlas: nil,
@@ -42,9 +42,34 @@ module Chess
           raise IndexError, "Неверный индекс"
         end
       end
+      
+      def piece data_x, data_y, width, height, transparency, get_class = nil, d
+        if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
+          self.class.new(
+            @img_instance,
+            # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
+            width: width, height: height,
+            color: [1.0, 1.0, 1.0, transparency],
+            rotate: 0,
+            z: 0,
+            d: d,
+            data: [data_x, data_y],
+            get_class: get_class,
+            )
+        end
+      end
+      
+      def mark x, y
+        # p "!*!*!@array: #{player}"
+        piece x, y, 120, 120, 0.9, -20
+      end
+      
+      def piece_for_path x, y
+        piece x, y, 100, 100, 0.6, -10
+      end
 
       def self.img_and_color color
-        @img = IMG.fetch(self.to_s)[color]
+        @img = IMG.fetch(self)[color]
       end
 
       def self.piece data_x, data_y, width, height, transparency, get_class = nil, d
@@ -62,34 +87,9 @@ module Chess
           )
         end
       end
-
-      def piece data_x, data_y, width, height, transparency, get_class = nil, d
-        if (0..7).cover?(data_x) && (0..7).cover?(data_y) # метод класса
-          self.class.new(
-            @img_instance,
-              # x: x * GRID_SIZE + GRID_SIZE + hash, y: y * GRID_SIZE + GRID_SIZE + hash,
-            width: width, height: height,
-            color: [1.0, 1.0, 1.0, transparency],
-            rotate: 0,
-            z: 0,
-            d: d,
-            data: [data_x, data_y],
-            get_class: get_class,
-          )
-        end
-      end
-
-      def mark x, y
-        # p "!*!*!@array: #{player}"
-        piece x, y, 120, 120, 0.9, -20
-      end
-
-      def piece_for_path x, y
-        piece x, y, 100, 100, 0.6, -10
-      end
     end
     
-    class Pawn < PieceImage
+    class Pawn #< PieceImage
       def path x, y
         temp_arr = []
         if @get_class == Player1
@@ -107,7 +107,7 @@ module Chess
       end
     end
     
-    class Knight < PieceImage
+    class Knight #< PieceImage
       def path x, y
         temp_arr = []
         arr1 = []; arr2 = []
@@ -135,7 +135,7 @@ module Chess
       end
     end
 
-    class Rook < PieceImage
+    class Rook #< PieceImage
       def path x, y
         temp_arr = []
         7.times do |i|
@@ -154,7 +154,7 @@ module Chess
       end
     end
 
-    class Bishop < PieceImage
+    class Bishop #< PieceImage
       def path x, y
         temp_arr = []
         7.times do |i|
@@ -173,7 +173,7 @@ module Chess
       end
     end
 
-    class Queen < PieceImage
+    class Queen #< PieceImage
       def path x, y
         temp_arr = []
         7.times do |i|
@@ -196,7 +196,7 @@ module Chess
       end
     end
 
-    class King < PieceImage
+    class King #< PieceImage
       def path x, y
         temp_arr = []
         temp_arr << piece_for_path(x, y + 1)

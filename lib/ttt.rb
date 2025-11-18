@@ -56,6 +56,9 @@ class T
   end
   def self.get_const
     p IMG
+  end  
+  def get_const
+    p IMG
   end
   def self.get_class
     p self.to_s.to_sym
@@ -91,7 +94,13 @@ Child.get_bb
 Child.new.get_bb
 
 Child.get_const
+p Child::IMG
+child = Child.new
+child.get_const
+p child.class::IMG
 Child.get_class
+p Child.name
+p Child.to_s
 
 
 
