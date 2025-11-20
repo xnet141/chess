@@ -37,7 +37,7 @@ on :mouse_down do |event|
   case event.button
   when :left
     t.remove unless t.nil?
-    if Chess::Logic.players_turn
+    if player1.players_turn
       player1.logic event.x, event.y
     else
       player2.logic event.x, event.y

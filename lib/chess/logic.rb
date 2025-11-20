@@ -17,16 +17,9 @@ module Chess
       # initialize_board 
     end
 
-    @array = Array.new(8) {Array.new(8)}
-    @players_turn = true    
-
-    class << self
-      attr_accessor :array, :players_turn
-    end
-
     def logic event_x, event_y
       axis = axis(event_x, event_y)
-      p axis
+      p "axis: #{axis}"
       return if axis.nil?
       x = axis[2]
       y = axis[3]
@@ -38,6 +31,13 @@ module Chess
     end
 
     private
+
+    @array = Array.new(8) {Array.new(8)}
+    @players_turn = true    
+
+    class << self
+      attr_accessor :array, :players_turn
+    end
 
     def initialize_pawns row_pawns, color
       Pawn.send(:img_and_color, color)
@@ -113,7 +113,7 @@ module Chess
         @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
         @array[y][x].new_coordinates x, y, 0
         @array[y][x].add
-        Chess::Logic.players_turn = !Chess::Logic.players_turn
+        @players_turn = !@players_turn
       end
     end
 
