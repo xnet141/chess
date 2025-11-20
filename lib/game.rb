@@ -37,11 +37,16 @@ on :mouse_down do |event|
   case event.button
   when :left
     t.remove unless t.nil?
-    if player1.players_turn
-      player1.logic event.x, event.y
-    else
+    if player2.players_turn
       player2.logic event.x, event.y
-    end
+      p "player1.players_turn: #{player1.players_turn}"
+      p "player2.players_turn: #{player2.players_turn}"
+    else
+      p "player1.players_turn: #{player1.players_turn}"
+      player1.logic event.x, event.y
+      p "player1.players_turn: #{player1.players_turn}"
+      p "player2.players_turn: #{player2.players_turn}"
+    end 
     t = Text.new(
       "player1.count: #{player1.count}, player2.count: #{player2.count}",
       x: 40, y: 936,

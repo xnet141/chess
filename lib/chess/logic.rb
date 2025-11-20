@@ -6,7 +6,8 @@ module Chess
     include Chess::Board
     include Chess::Pieces
 
-    attr_reader :array
+    # attr_reader :array
+    # attr_reader :players_turn
 
     def initialize
       @mark_turn = true
@@ -30,14 +31,14 @@ module Chess
       end
     end
 
-    private
-
     @array = Array.new(8) {Array.new(8)}
-    @players_turn = true    
+    @players_turn = true
 
     class << self
       attr_accessor :array, :players_turn
     end
+
+    private
 
     def initialize_pawns row_pawns, color
       Pawn.send(:img_and_color, color)
