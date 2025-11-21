@@ -15,7 +15,7 @@ module Chess
       @show_marked_piece = nil
       @path_squares = []
       @chessmans = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
-      # initialize_board 
+      # initialize_board
     end
 
     def logic event_x, event_y
@@ -31,14 +31,25 @@ module Chess
       end
     end
 
+    @test = [0, 0, 0]
+    @test2 = 0
     @array = Array.new(8) {Array.new(8)}
     @players_turn = true
 
     class << self
-      attr_accessor :array, :players_turn
+      attr_accessor :array, :players_turn, :test, :test2
     end
 
     private
+
+    def test
+      @test[1] += 1
+      @test 
+    end
+
+    def test2
+      @test2 += 1
+    end    
 
     def initialize_pawns row_pawns, color
       Pawn.send(:img_and_color, color)
@@ -106,6 +117,10 @@ module Chess
       # @path_squares.compact.each(&:remove) # убрать все  nil
     end
 
+    # def cust_turn
+    #   @players_turn = !@players_turn
+    # end
+
     def make_move x, y
       if @array[y][x].nil?
         @array[y][x] = @array[@mark_cordinates[0]][@mark_cordinates[1]]
@@ -114,7 +129,14 @@ module Chess
         @array[@mark_cordinates[0]][@mark_cordinates[1]] = nil
         @array[y][x].new_coordinates x, y, 0
         @array[y][x].add
-        @players_turn = !@players_turn
+        Chess::Logic.players_turn = !Chess::Logic.players_turn
+        # self.class.superclass.players_turn = !self.class.superclass.players_turn
+        # p "===============&&&&&&&&&&&&&&&&&&"
+        # p "mv: players_turn: #{@players_turn}"
+        # p "===============&&&&&&&&&&&&&&&&&&"
+        p "test: #{test}"
+        p "test2: #{test2}"
+        # @players_turn = !@players_turn
       end
     end
 

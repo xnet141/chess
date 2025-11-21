@@ -6,6 +6,8 @@ module Chess
     attr_reader :players_turn
 
     def initialize
+      @test = Chess::Logic.test
+      @test2 = Chess::Logic.test2
       @array = Chess::Logic.array
       @count = 0
       @players_turn = Chess::Logic.players_turn
@@ -20,6 +22,8 @@ module Chess
     attr_reader :players_turn
 
     def initialize
+      @test = Chess::Logic.test
+      @test2 = Chess::Logic.test2
       @array = Chess::Logic.array
       @count = 0
       @players_turn = Chess::Logic.players_turn
