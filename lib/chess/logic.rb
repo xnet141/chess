@@ -37,19 +37,25 @@ module Chess
     @players_turn = true
 
     class << self
-      attr_accessor :array, :players_turn, :test, :test2
+      attr_accessor :array, :players_turn#, :test, :test2
     end
 
-    private
-
-    def test
+    def self.test
       @test[1] += 1
       @test 
     end
 
-    def test2
+    def self.test2
+      # p "self: #{self.class}"
       @test2 += 1
-    end    
+      @test2
+      # p "obj_id: #{@test2.object_id}"
+      # @test2
+    end
+
+
+    private
+  
 
     def initialize_pawns row_pawns, color
       Pawn.send(:img_and_color, color)
@@ -134,8 +140,12 @@ module Chess
         # p "===============&&&&&&&&&&&&&&&&&&"
         # p "mv: players_turn: #{@players_turn}"
         # p "===============&&&&&&&&&&&&&&&&&&"
-        p "test: #{test}"
-        p "test2: #{test2}"
+        # @test[1] += 1
+        # @test2 += 1
+        p "obj_id: #{@test1.object_id}"
+        p "obj_id: #{@test2.object_id}"
+        p "test: #{@test}"
+        p "test2: #{@test2}"
         # @players_turn = !@players_turn
       end
     end
